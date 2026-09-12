@@ -2,7 +2,7 @@
 
 An end-to-end financial data science project for profiling the soundness of European banks using CAMELS-style indicators, operating-environment measures, and explainable machine learning.
 
-This repository is an individual portfolio adaptation of a Financial Data Science group project completed at University College Dublin. The original study covered 8,033 bank-year observations across 18 European countries from 2010 to 2021.
+This repository is an individual portfolio adaptation of a Financial Data Science project completed at University College Dublin. The original study covered 8,033 bank-year observations across 18 European countries from 2010 to 2021.
 
 ## Business question
 
