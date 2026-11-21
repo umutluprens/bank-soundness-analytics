@@ -1,0 +1,19 @@
+ITEM,WHERE TO FIND IT,2022,2023,2024,2025
+TOTAL REGULATORY CAPITAL,"Own funds (Tier 1 + Tier 2), capital adequacy note",,1620,1730,1810
+TIER 1 CAPITAL,"Tier 1 capital, capital adequacy note",,1390,1480,1570
+RISK-WEIGHTED ASSETS,Total risk-weighted assets (risk exposure amount),,10000,10300,10600
+TOTAL ASSETS,Balance sheet total,19200,20000,20800,21500
+TOTAL EQUITY,Total equity including minority interests,1830,1880,1950,2040
+INTANGIBLE ASSETS,Goodwill and other intangibles (0 if none),,120,115,110
+TOTAL DEBT,"Borrowings from banks, debt securities issued and subordinated debt (not customer deposits)",,1690,1660,1630
+GROSS LOANS,"Gross loans to customers, before loss allowances",,12500,12900,13300
+PROBLEM LOANS,"Non-performing / Stage 3 / impaired loans, gross",,975,916,878
+LOAN LOSS RESERVES,"Loss allowances on customer loans (stock, balance sheet)",,507,504,500
+TOTAL OPERATING INCOME,"Net interest income + net fees + trading and other income, before expenses and provisions",,600,666,710
+OPERATING EXPENSES,"Staff, administrative and depreciation expenses, without loan loss provisions",,396,426,440
+NET INTEREST INCOME,Interest income minus interest expense,,345,395,430
+NET INCOME,Profit for the year after tax,,49,82,116
+INTEREST-EARNING ASSETS,"Loans, interbank placements and debt securities (total assets if not available)",17300,18000,18700,19400
+LIQUID ASSETS,"Cash, central bank balances, interbank placements and liquid securities",,5000,5500,5800
+CUSTOMER DEPOSITS,Deposits from customers,,15000,15500,15900
+SHARES OUTSTANDING,Number of shares at year end (optional; equity growth is used if empty),100,100,100,100

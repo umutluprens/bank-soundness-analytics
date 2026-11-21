@@ -90,3 +90,24 @@ def test_browser_tool_gives_the_same_result(setup, tmp_path):
           % (str(ROOT / "tool/camels_tool.js"), str(f)))
     got = json.loads(subprocess.run(["node", "-e", js], capture_output=True, text=True, check=True).stdout)
     assert all(abs(p["final_score"] - round(g, 2)) < 0.011 for p, g in zip(py, got))
+
+
+def test_ratios_from_raw_items():
+    from camels_score.newbank import ratios_from_raw
+    raw = {2024: {"TOTAL ASSETS": 1000, "TOTAL EQUITY": 100},
+           2025: {"TOTAL REGULATORY CAPITAL": 90, "TIER 1 CAPITAL": 80, "RISK-WEIGHTED ASSETS": 500,
+                  "TOTAL ASSETS": 1200, "TOTAL EQUITY": 110, "INTANGIBLE ASSETS": 10, "TOTAL DEBT": 220,
+                  "GROSS LOANS": 800, "PROBLEM LOANS": 40, "LOAN LOSS RESERVES": 20,
+                  "TOTAL OPERATING INCOME": 50, "OPERATING EXPENSES": 30, "NET INTEREST INCOME": 33,
+                  "NET INCOME": 11, "LIQUID ASSETS": 300, "CUSTOMER DEPOSITS": 780}}
+    out, notes = ratios_from_raw(raw)
+    r = out[2025]
+    assert 2024 not in out and any("opening balances" in n for n in notes)
+    assert r["TOTAL CAPITAL RATIO"] == pytest.approx(18.0)
+    assert r["TOTAL DEBT/ TOTAL EQUITY"] == pytest.approx(2.0)
+    assert r["PROBLEM LOANS RATIO"] == pytest.approx(5.0)
+    assert r["TEXAS RATIO"] == pytest.approx(40 / (110 - 10 + 20) * 100)
+    assert r["ROAA"] == pytest.approx(1.0)                 # 11 / average(1000, 1200)
+    assert r["COST TO INCOME RATIO"] == pytest.approx(60.0)
+    assert r["LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS"] == pytest.approx(30.0)
+    assert r["BOOKVALUE PER SHARE GROWTH"] == pytest.approx(10.0)

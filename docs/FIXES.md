@@ -1,4 +1,4 @@
-# Fix log: 2023 UCD CAMELS project → camels-score v0.7
+# Fix log: 2023 UCD CAMELS project → camels-score v0.8
 
 Sources reviewed: FDS Final Report (Executive Style), 21 April 2023, with its code appendix, and
 the original 2023 data folder (CAMELS_2010–2021.xlsx, Data_Management_2.xlsx, BICRA.xlsx,
@@ -183,13 +183,20 @@ Effect: event AUC 0.91 overall and 0.92 after 2017 (unchanged); proxy AUC after 
 
 Effect of the new weights: event AUC 0.90 all years (0.91), 0.92 after 2017 (unchanged); proxy AUC after 2017 0.77 (0.73); PSI 0.20 (0.15); grade 10 share 11.1% (10.5%). The gain is on the earnings-driven proxy; event ranking is flat.
 
+## Added in v0.8
+
+| # | Change |
+|---|---|
+| 52 | The 16 remaining events checked against official sources (European Commission decisions, Central Bank of Ireland, Banco de España, Bank of England, ECB, ESM, Eurostat, National Bank of Ukraine). All 48 events are now verified. Eurobank 2015 reclassified from state aid to distressed recapitalisation (covered privately). Back-test unchanged. |
+| 54 | New-bank grader accepts annual-report figures (`--raw`, `templates/raw_items_template.csv`): 18 items per year, ratios calculated with the panel's definitions. Forecast ranges calibrated with conformalised quantile regression (coverage 75% to 79%). |
+| 53 | Phase 2, first version: `camels_score/forecast.py` and `run_forecast.py`. Walk-forward forecast of next year's score by three routes (persistence, direct, ratios scored by the frozen scorecard), downgrade classifier, 80% range, slot for macro expectations. 33 tests. |
+
 ## Still open
 
-1. Re-check the 16 seed events marked `seed_not_rechecked` in data/events.csv.
-2. Public data for the added ratios (CET1, leverage ratio, cost of risk, Stage 2, NSFR,
+1. Public data for the added ratios (CET1, leverage ratio, cost of risk, Stage 2, NSFR,
    loans/deposits, IRRBB, FX loans), starting with the EBA bulk files (METHODOLOGY.md section 12). Only 14 of the 36 registry ratios are in the 2023 export.
-3. Replace BICRA with an open operating-environment score.
-4. Decide on the remaining proposals in METHODOLOGY.md section 11 (cap-only country anchor, absolute bands).
-5. Confirm ownership and support levels in data/parents.csv and enter PARENT_GRADE for the 22 parents outside the panel (VTB, Sberbank, Raiffeisen, Erste, Deutsche Bank, Citi, Banca Popolare di Vicenza and others). Check the Danske Bank Hamburg branch record (assets 68% of the parent's).
-6. Replace the countryeconomy.com sovereign series with Fitch's own history, and add S&P and Moody's from a primary source.
-7. Phase 2: next-year forecast with machine learning (ROADMAP.md).
+2. Replace BICRA with an open operating-environment score.
+3. Decide on the remaining proposals in METHODOLOGY.md section 11 (cap-only country anchor, absolute bands).
+4. Confirm ownership and support levels in data/parents.csv and enter PARENT_GRADE for the 22 parents outside the panel (VTB, Sberbank, Raiffeisen, Erste, Deutsche Bank, Citi, Banca Popolare di Vicenza and others). Check the Danske Bank Hamburg branch record (assets 68% of the parent's).
+5. Replace the countryeconomy.com sovereign series with Fitch's own history, and add S&P and Moody's from a primary source.
+6. Phase 2: add macro expectations (IMF WEO vintages) and improve the downgrade signal (ROADMAP.md).

@@ -24,7 +24,7 @@ and validation against real distress events rather than against the model's own 
 
 ## Results on the 2010–2021 panel
 
-Against 48 distress events (failures, resolutions, state aid, bail-ins; 32 verified against
+Against 48 distress events (failures, resolutions, state aid, bail-ins; all verified against
 official sources, `data/events.csv`), events within two years of the grade:
 
 | Measure | 2023 project | This scorecard |
@@ -47,7 +47,7 @@ Details, limits and the comparison with S&P, Moody's and Fitch are in the docume
 | [docs/COMPARISON.md](docs/COMPARISON.md) | Design compared with S&P, Moody's and Fitch bank methodologies |
 | [docs/FIXES.md](docs/FIXES.md) | What changed from the 2023 project and why |
 | [docs/SOURCES.md](docs/SOURCES.md) | Every external source behind the method and the input files |
-| [docs/ROADMAP.md](docs/ROADMAP.md) | Phase 2: next-year forecast with machine learning |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Phase 2: next-year forecast with machine learning, first results |
 
 ## Quick start
 
@@ -74,6 +74,8 @@ migration; peer profiles), `validation_report.json` and `calibration.json` (the 
 python score_new_bank.py --input templates/example_bank.csv --calibration results/calibration.json \
     --country-score 4 --sovereign BBB --name "Example Bank"
 # a parent: --parent-rating A --support strategic --assets-share 0.08     overlay: --overlay 1
+# from annual-report figures instead of ratios (18 items per year, ratios are calculated):
+python score_new_bank.py --raw templates/example_bank_raw_items.csv --calibration results/calibration.json --country-score 4
 
 # browser version with the calibration embedded
 python tool/build_tool.py --calibration results/calibration.json --out results/camels_new_bank_tool.html
@@ -82,12 +84,24 @@ python tool/build_tool.py --calibration results/calibration.json --out results/c
 For bank-years with full data the new-bank route gives the same grade as the pipeline in 99.3%
 of cases; the browser tool and the Python route give identical results (`tests/test_newbank.py`).
 
+## Forecast next year (phase 2, first version)
+
+```bash
+python run_forecast.py --input panel.csv --events data/events.csv --out results/forecast
+```
+
+Walk-forward on 2014–2021 (5,235 forecasts, each year forecast from the year before): forecasting
+the ratios and grading them with the frozen scorecard gives an error of 0.72 notches against 0.77
+for "next year equals this year", and is better in all eight years. Downgrades remain hard to
+call (AUC 0.64). Macro expectations are not in the model yet. See docs/ROADMAP.md.
+
 ## Repository structure
 
 ```text
 camels_score/        scorecard package: ratios, data preparation, scoring, group support,
                      overlays, validation, peer profiles, new-bank scoring
 run_pipeline.py      calibrate, grade and validate a panel
+run_forecast.py      walk-forward forecast of next year's score
 score_new_bank.py    grade one bank from a template
 compare_legacy.py    2023 score against the new grade
 data/                events, parent mapping, sovereign ratings, overlays (each row with its source)
