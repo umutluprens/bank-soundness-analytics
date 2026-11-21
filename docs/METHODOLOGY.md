@@ -1,6 +1,6 @@
 # CAMELS Bank Soundness Scorecard: Methodology
 
-Version 0.9 (November 2026). Author: Umut Yasar.
+Version 0.10 (November 2026). Author: Umut Yasar.
 Status: working methodology, calibrated and back-tested on the 2023 UCD Capital IQ panel.
 Not reviewed by a model validation function.
 
@@ -470,6 +470,113 @@ the same integer grade in 99.3% of them (99.9% within one notch). The difference
 winsorising at extreme values. The browser tool and the Python route agree on all 946 bank-years
 of a random test set (`tests/test_newbank.py` repeats this check).
 
+## 15. EBA transparency data
+
+The EBA EU-wide transparency exercise publishes bank-by-bank supervisory data for about 120 EU and
+EEA banks. The files are open. They are used here for three things: a check on the Capital IQ
+figures, ratios the 2023 export did not have, and bank-years after 2021.
+
+### Files and reading rules
+
+`camels_score/eba.py` reads the "other templates" file (`tr_oth.csv`) of the 2019 to 2025
+exercises (eight files). Item codes carry the exercise year in the first two digits; the last
+five digits are stable and are what the mapping uses. Only December dates are kept, which gives
+2018 to 2024. Profit and loss items are cumulative over the reported number of quarters and are
+annualised. The 2019 file writes amounts with thousands separators. Rows with a fair value level
+breakdown are dropped. Banks whose loans are below 1% of assets (custodians, a clearing house)
+get no loan ratios.
+
+### Bank matching
+
+`data/eba_bank_map.csv` links each EBA bank (LEI) to a panel ID. Of 164 EBA banks, 75 are matched
+to 74 panel banks: 53 by name, 17 by hand (renamed or restructured groups, for example Royal Bank
+of Scotland Group to NatWest Group, Piraeus Bank to Piraeus Financial Holdings) and 5 marked
+approximate because the reporting entity differs (Barclays, BFA and Bankia, HSBC Germany, MKB,
+Mediolanum). 49 banks are in countries outside the panel and 40 have no counterpart in it
+(Deutsche Bank group, Rabobank, Nationwide, EU subsidiaries of US investment banks, and holding
+or subsidiary levels of banks already matched). Name matching alone was not reliable and every
+row was checked. Approximate matches are left out of the panel extension.
+
+### Ratios
+
+22 registry ratios are built (`data/eba_ratio_map.csv` gives the formula and a quality mark for
+each). Capital ratios and the leverage ratio are reported by the banks. Problem loans are IFRS 9
+stage 3 loans over gross loans at amortised cost and at fair value through OCI; this includes
+loans to banks. The file has no liquidity coverage ratio, net stable funding ratio or liquid
+asset figure. For December 2018 it has no equity or deposit breakdown.
+
+### Comparison with Capital IQ, 2018 to 2021
+
+233 bank-years are in both sources.
+
+| Ratio | Median absolute difference | Rank correlation |
+|---|---|---|
+| Total capital ratio, Tier 1 ratio | 0.00 points | 0.99 |
+| ROAA | 0.02 points | 0.98 |
+| ROAE | 0.14 points | 0.97 |
+| Debt / equity | 0.05x | 0.98 |
+| Net interest margin | 0.09 points | 0.94 |
+| Operating return on assets | 0.11 points | 0.92 |
+| Problem loans ratio | 0.27 points | 0.91 |
+| Texas ratio | 0.73 points | 0.88 |
+| Reserve coverage | 1.0 points | 0.84 |
+| Cost to income | 3.6 points | 0.79 |
+
+The asset quality gap is one of definition (stage 3 against Capital IQ's problem loans) and is
+largest for Greek and Cypriot banks. Cost to income differs because the two sources group income
+and expense lines differently.
+
+Grades were then recalculated with the EBA ratios in place of the Capital IQ ones, with the
+calibration unchanged.
+
+| Run | Same grade | Within one notch | Rank correlation | Mean difference |
+|---|---|---|---|---|
+| 11 ratios from EBA, 3 kept from Capital IQ | 72% | 96% | 0.95 | +0.02 |
+| Same, 2019 to 2021 only | 80% | 98% | 0.97 | +0.01 |
+| EBA only, gaps filled by the penalty rule | 41% | 84% | 0.88 | +0.69 |
+| EBA only, gaps neutral | 53% | 92% | 0.89 | 0.00 |
+| EBA only, liquidity carried, book value growth neutral | 55% | 92% | 0.89 | -0.21 |
+
+The data are equivalent where both sources report. The 0.7 notch bias of the EBA-only run comes
+from the missing liquid asset ratio, which the penalty rule fills with a weak value for every
+bank. 2018 agrees less well (51% same grade) because equity is missing in that year.
+
+### Panel extension, 2022 to 2024
+
+`--eba-folder` adds 161 scored bank-years for 56 matched banks in 13 countries. Rules for these rows:
+
+- The 11 scored ratios available in the EBA files come from them. ROAA volatility is derived as usual.
+- The liquid asset ratio keeps the bank's last reported value (2021 or earlier). Rows carry
+  `CARRIED_RATIOS` so that the stale input is visible. In the test above this was slightly
+  closer to the Capital IQ grades for 2019 to 2021 than a neutral fill (95% against 93% within
+  one notch) and it keeps differences between banks.
+- Book value per share growth is set to the calibration median.
+- Total assets are converted from EUR million to USD thousand at the ECB year-end rate.
+- The country score and the sovereign rating keep their last value (2021). This is conservative
+  for Greece and Cyprus, which were upgraded afterwards.
+- Rows are marked `DATA_SOURCE = EBA`. Scores for 2010 to 2021 do not change (largest move 0.01).
+
+The mean score of the 54 banks moves from 4.5 in 2021 to 4.3, 3.7 and 3.4 in 2022 to 2024,
+driven by earnings and asset quality. There are no outcome events after 2021 in `data/events.csv`,
+so these years are not part of the back-test.
+
+### Forecast
+
+With the extension the walk-forward test gains three target years (2022 to 2024, 159 forecasts).
+Mean absolute error in notches: persistence 0.54, direct 0.46, ratio route 0.36; the 80% range
+covers 80%. `run_forecast.py` now also writes `outlook_next_year.csv`: the forecast for the year
+after the last one in the panel (2025 for the 54 banks with 2024 data). It cannot be tested yet.
+
+### Limits
+
+- 56 banks (54 in a typical year), all large EU banks. No UK bank (the exercise covered UK banks
+  until December 2019) and none from Türkiye, Georgia, Ukraine, Belarus or Azerbaijan.
+- The liquidity pillar of the added years rests on a carried value.
+- The EBA has ended the transparency exercise in this form after 2025; later years have to come
+  from the Pillar 3 data hub.
+- The added ratios (CET1, leverage, stage 2, cost of risk, deposits) exist for 2018 onwards
+  only and are stored, not scored: the calibration window is 2010 to 2017.
+
 ## Version log
 
 | Version | Change |
@@ -483,3 +590,4 @@ of a random test set (`tests/test_newbank.py` repeats this check).
 | 0.7 | Pillar weights C 20%, A 30%, M 5%, E 25%, L 15%, S 5%; S&P-style grade descriptors; new-bank scoring (command line and browser tool) |
 | 0.8 | All 48 events verified against official sources; phase 2 forecast, first version (ROADMAP.md) |
 | 0.9 | Open operating-environment score from World Bank data; new-bank grading from annual-report figures; macro expectations tested in the forecast |
+| 0.10 | EBA transparency data: bank matching, 22 ratios, comparison with Capital IQ, panel extended to 2022–2024 for 56 banks, outlook for the next year |

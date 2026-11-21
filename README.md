@@ -112,16 +112,33 @@ the ratios and grading them with the frozen scorecard gives an error of 0.72 not
 for "next year equals this year", and is better in all eight years. Downgrades remain hard to
 call (AUC 0.64). IMF WEO expectations were tested and did not help. See docs/ROADMAP.md.
 
+## EBA transparency data (2018–2024)
+
+```bash
+# <folder>/<exercise>/tr_oth.csv from the EBA EU-wide transparency exercises 2019–2025 (open data)
+python run_pipeline.py --input panel.csv --eba-folder external_data/eba --out results/
+python run_forecast.py --input panel.csv --eba-folder external_data/eba --out results/forecast
+```
+
+`camels_score/eba.py` builds 22 ratios from the EBA files. `data/eba_bank_map.csv` links 75 EBA
+banks (LEI) to the panel and `data/eba_ratio_map.csv` shows how each ratio is built. On 233
+bank-years reported by both sources, capital and earnings ratios are near identical to the
+Capital IQ figures and grades are within one notch in 96% of cases. The option adds 2022–2024
+for 56 EU banks and writes a forecast for the following year (`outlook_next_year.csv`). The EBA
+files carry no liquidity ratios, so the liquid asset ratio of the added years is the bank's last
+reported value. Details in docs/METHODOLOGY.md section 15.
+
 ## Repository structure
 
 ```text
 camels_score/        scorecard package: ratios, data preparation, scoring, group support,
-                     overlays, validation, peer profiles, new-bank scoring
+                     overlays, validation, peer profiles, new-bank scoring, EBA loader
 run_pipeline.py      calibrate, grade and validate a panel
 run_forecast.py      walk-forward forecast of next year's score
 score_new_bank.py    grade one bank from a template
 compare_legacy.py    2023 score against the new grade
-data/                events, parent mapping, sovereign ratings, overlays (each row with its source);
+data/                events, parent mapping, sovereign ratings, overlays (each row with its source),
+                     EBA bank and ratio mapping;
                      data/open: World Bank indicators, IMF WEO vintages, open country scores
 dist/                ready-built new bank grader
 templates/           new-bank template and a fictitious example
@@ -139,8 +156,8 @@ The 2010–2021 panel was exported from S&P Capital IQ, and the country scores a
 groups. The figures come from public bank reports, but the exports and BICRA fall under S&P's
 terms of use, so neither they nor bank-level results built from them are published here. The
 files in `data/` were compiled for this project from public sources, which are listed row by row.
-The synthetic panel lets the whole workflow run without restricted data. A rebuild of the panel
-from public sources (EBA transparency data, national supervisors, annual reports) is planned.
+The synthetic panel lets the whole workflow run without restricted data. The EBA transparency files are open
+data and are read from a local folder; they are not copied into the repository.
 
 ## Earlier pipeline
 
