@@ -1,0 +1,23 @@
+RATIO,QUALITY,HOW
+TOTAL CAPITAL RATIO,exact,"reported ratio, transitional"
+TIER1 RATIO,exact,"reported ratio, transitional"
+CET1 RATIO,exact,"reported ratio, transitional"
+LEVERAGE RATIO,exact,"reported ratio, transitional Tier 1"
+RWA DENSITY,exact,total risk exposure amount / total assets
+PROBLEM LOANS RATIO,close,stage 3 loans / gross loans (amortised cost and FVOCI); loans include loans to banks
+STAGE 2 LOANS RATIO,exact,stage 2 loans / gross loans
+LOAN LOSS RESERVE TO PROBLEM LOANS,close,"accumulated impairment on loans, all stages / stage 3 loans"
+TEXAS RATIO,close,stage 3 loans / (equity - intangibles + accumulated impairment); foreclosed assets not included
+COST OF RISK,close,impairment on assets at amortised cost / average gross loans
+LOAN GROWTH,exact,"change in gross loans, %"
+ROAA,exact,profit for the year / average total assets
+ROAE,close,profit for the year / average total equity (equity from June 2020; assets less liabilities for December 2019)
+NET INTEREST MARGIN,proxy,net interest income / average total assets (not earning assets)
+COST TO INCOME RATIO,exact,(administrative expenses + depreciation) / operating income
+OPERATING RETURN ON ASSETS,proxy,total operating income / total assets; the panel uses a wider revenue line
+NON-INTEREST INCOME SHARE,exact,1 - net interest income / operating income
+PRE-PROVISION PROFIT / RWA,exact,(operating income - costs) / RWA
+TOTAL DEBT/ TOTAL EQUITY,proxy,debt securities issued / total equity (multiple); other borrowings not included
+LOANS / DEPOSITS,close,gross loans / customer deposits
+CUSTOMER DEPOSITS / TOTAL FUNDING,close,customer deposits / financial liabilities
+SECURITIES / TOTAL ASSETS,close,debt securities at amortised cost and FVOCI + trading assets / total assets
