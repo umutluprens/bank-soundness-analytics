@@ -11,3 +11,5 @@ results/
 *.db
 .env
 
+results*/
+.pytest_cache/

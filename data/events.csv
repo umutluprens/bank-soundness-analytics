@@ -1,0 +1,49 @@
+ID,BANK NAME,COUNTRY,YEAR,EVENT,TYPE,STATUS,SOURCE
+4024522,Dexia SA,Belgium,2011,Second state rescue and orderly resolution plan,state_aid,seed_not_rechecked,
+4247660,Dexia Crédit Local S.A.,France,2011,Part of Dexia group rescue,state_aid,seed_not_rechecked,
+8677581,"Allied Irish Banks, p.l.c.",Ireland,2011,State recapitalisation after 2011 PCAR,state_aid,seed_not_rechecked,
+4022210,Permanent TSB plc,Ireland,2011,State recapitalisation after 2011 PCAR,state_aid,seed_not_rechecked,
+4332442,Permanent TSB Group Holdings plc,Ireland,2011,State recapitalisation after 2011 PCAR,state_aid,seed_not_rechecked,
+4242131,Caja de Ahorros de Galicia,Spain,2011,FROB recapitalisation and control of NCG Banco (Sep 2011),state_aid,verified,https://agenceurope.eu/en/bulletin/article/10464/32/state-aid-allows-for-rescue-of-three-spanish-banks
+4291604,"Bankia, S.A.",Spain,2012,Nationalisation and FROB recapitalisation,state_aid,seed_not_rechecked,
+4291241,"Liberbank, S.A.",Spain,2012,EC-approved restructuring with ESM/FROB capital (Group 2 bank; 20 Dec 2012),state_aid,verified,https://cms.law/en/int/regulatory-news/ec-liberbank-caja3-banco-mare-nostrum-banco-ceiss
+4283608,Banco Grupo Cajatres SA,Spain,2012,EC-approved restructuring with ESM/FROB capital (Group 2 bank; 20 Dec 2012),state_aid,verified,https://cms.law/en/int/regulatory-news/ec-liberbank-caja3-banco-mare-nostrum-banco-ceiss
+4183974,Max Bank A/S,Denmark,2011,Failed solvency requirement; wound up via Finansiel Stabilitet (Oct 2011),failure,verified,https://fs.dk/media/1eab2ogc/fs_annual_report_2011_uk.pdf
+4238417,Tønder Bank A/S,Denmark,2012,Taken over by Finansiel Stabilitet (Nov 2012),failure,verified,https://admin.finanstilsynet.dk/Media/638513584887639182/Finanstilsynets_aarsrapport2012.pdf
+4185803,SRH N.V. (SNS REAAL),Netherlands,2013,Nationalised by the Dutch State (1 Feb 2013),state_aid,verified,https://government.nl/latest/news/2013/02/01/state-of-the-netherlands-nationalises-sns-reaal
+4238310,Banca Popolare di Spoleto SpA,Italy,2013,Extraordinary administration (Feb 2013),distressed_recap,verified,https://en.wikipedia.org/wiki/Banca_Popolare_di_Spoleto
+4893578,Bank of Cyprus Holdings,Cyprus,2013,Bail-in of uninsured depositors,bail_in,seed_not_rechecked,
+4254078,Marfin Laiki Bank UK,United Kingdom,2013,Parent Laiki resolved; UK operations sold,resolution,seed_not_rechecked,
+4048999,National Bank of Greece S.A.,Greece,2013,HFSF recapitalisation,state_aid,verified,"Commission Decision (EU) 2015/1092 (NBG): HFSF Spring 2013 recapitalisation, https://eur-lex.europa.eu/eli/dec/2015/1092/oj/eng"
+4145110,Piraeus Financial Holdings S.A.,Greece,2013,HFSF recapitalisation,state_aid,verified,"Commission Decision (EU) 2015/455 (Piraeus): HFSF Spring 2013 recapitalisation, https://eur-lex.europa.eu/eli/dec/2015/455/oj/eng"
+4145113,Eurobank Ergasias,Greece,2013,HFSF recapitalisation,state_aid,seed_not_rechecked,
+4048999,National Bank of Greece S.A.,Greece,2015,Second recapitalisation after 2015 ECB assessment,state_aid,seed_not_rechecked,
+4145110,Piraeus Financial Holdings S.A.,Greece,2015,Second recapitalisation after 2015 ECB assessment,state_aid,seed_not_rechecked,
+4145113,Eurobank Ergasias,Greece,2015,Second recapitalisation after 2015 ECB assessment,state_aid,seed_not_rechecked,
+4185975,The Co-operative Bank p.l.c.,United Kingdom,2013,Capital shortfall and liability management exercise,distressed_recap,seed_not_rechecked,
+4182766,Banca Monte dei Paschi di Siena S.p.A.,Italy,2013,State aid (Monti bonds),state_aid,seed_not_rechecked,
+4182766,Banca Monte dei Paschi di Siena S.p.A.,Italy,2017,Precautionary recapitalisation,state_aid,seed_not_rechecked,
+4536098,JSC Brokbusinessbank,Ukraine,2014,Declared insolvent by NBU (28 Feb 2014); licence revoked Jun 2014,failure,verified,https://bank.gov.ua/en/news/all/natsionalniy-bank-priynyav-rishennya-pro-vidklikannya-bankivskoyi-litsenziyi-ta-likvidatsiyu-at-brokbiznesbank
+4252110,PJSC Delta Bank,Ukraine,2015,Declared insolvent by NBU (2 Mar 2015),failure,verified,https://bank.gov.ua/en/news/all/at-delta-bank-vidneseno-do-kategoriyi-neplatospromojnih
+4256250,PJSC Kyivska Rus Bank,Ukraine,2015,Declared insolvent by NBU (19 Mar 2015),failure,verified,https://bank.gov.ua/en/news/all/pat-bank-kiyivska-rus-vidneseno-do-kategoriyi-neplatospromojnih
+4536099,Commercial Bank Financial Initiative PJSC,Ukraine,2015,Declared insolvent by NBU (23 Jun 2015),failure,verified,https://bank.gov.ua/news/all/pat-kb-finansova-initsiativa-vidneseno-do-kategoriyi-neplatospromojnih
+4361158,International Bank of Azerbaijan,Azerbaijan,2015,State rescue after manat devaluation,state_aid,verified,https://www.intellinews.com/london-court-upholds-request-to-protect-azerbaijan-s-iba-against-creditors-123148/
+4361158,International Bank of Azerbaijan,Azerbaijan,2017,Default on USD 3.3bn foreign debt and restructuring (May 2017),default,verified,https://www.intellinews.com/94-of-creditors-of-azerbaijan-s-iba-approve-debt-restructuring-plan-125621/
+4558950,Parabank OJSC,Azerbaijan,2016,Licence cancelled by FIMSA (2016 clean-up),failure,verified,https://www.azernews.az/business/99714.html
+4242242,JSC CB PrivatBank,Ukraine,2016,Nationalisation,state_aid,seed_not_rechecked,
+4318102,Diamantbank PJSC,Ukraine,2017,Declared insolvent by NBU (24 Apr 2017),failure,verified,https://bank.gov.ua/news/all/pat-diamantbank-vidneseno-do-kategoriyi-neplatospromojnih
+4242278,Veneto Banca S.p.A.,Italy,2017,Compulsory administrative liquidation (25 Jun 2017),failure,verified,https://www.bancaditalia.it/media/notizia/piano-di-intervento-per-la-soluzione-della-crisi-della-banca-popolare-di-vicenza-e-di-veneto-banca
+4298645,Banca Nuova SpA,Italy,2017,Subsidiary of failed Banca Popolare di Vicenza; transferred to Intesa,parent_failure,verified,https://group.intesasanpaolo.com/it/investor-relations/comunicati-stampa-price-sensitive/2017/06/CNT-05-00000004DDFA8
+4242102,Banca Apulia SpA,Italy,2017,Subsidiary of failed Veneto Banca; transferred to Intesa,parent_failure,verified,https://group.intesasanpaolo.com/it/investor-relations/comunicati-stampa-price-sensitive/2017/06/CNT-05-00000004DDFA8
+4387820,Cassa di Risparmio di Cesena S.p.A.,Italy,2017,FITD Voluntary Scheme rescue and sale to Crédit Agricole,distressed_recap,verified,https://fitd.it/Content/public/documents/Files/SVI_Relazione_e_Rendiconto_2025.pdf
+4407509,BANCA CARIM - Cassa di Risparmio di Rimini S.p.A.,Italy,2017,FITD Voluntary Scheme rescue and sale to Crédit Agricole,distressed_recap,verified,https://fitd.it/Content/public/documents/Files/SVI_Relazione_e_Rendiconto_2025.pdf
+4238386,Østjydsk Bank A/S,Denmark,2018,Failed solvency requirement; Finansiel Stabilitet involved in transfer,failure,verified,https://finanstilsynet.dk/media/43211/Redegrelse_om_stjydsk_Bank_0820 pdf.pdf
+4238535,JSC VTB Bank (Ukraine),Ukraine,2018,Declared insolvent by NBU (27 Nov 2018); liquidity crisis after court asset freeze,failure,verified,https://bank.gov.ua/en/news/all/at-vtb-bank-vidneseno-do-kategoriyi-neplatospromojnih
+4150523,Banca Carige S.p.A.,Italy,2019,ECB temporary administration (2 Jan 2019),distressed_recap,verified,https://www.bankingsupervision.europa.eu/press/pr/date/2019/html/ssm.pr190102.en.html
+4145342,Norddeutsche Landesbank Girozentrale,Germany,2019,EUR 3.6bn recapitalisation led by owner states (EC: no state aid),distressed_recap,verified,https://www.nordlb.com/nordlb/press/eu-commission-gives-green-light-to-capital-measures
+4649949,Amrahbank OJSC,Azerbaijan,2020,Licence revoked by Central Bank (28 Apr 2020),failure,verified,https://www.cbar.az/press-release-2586/azrbaycan-respublikasi-mrkzi-bankinin-mlumati
+4538223,AGBank OJSC,Azerbaijan,2020,Licence revoked by Central Bank (12 May 2020),failure,verified,https://en.trend.az/business/finance/3238073.html
+4298141,Idea Bank S.A.,Poland,2020,Resolution by BFG (31 Dec 2020),resolution,verified,https://bfg.pl/en/resolution-of-idea-bank-s-a/
+4256898,Greensill Bank AG,Germany,2021,BaFin moratorium (3 Mar 2021) and insolvency,failure,verified,https://www.bafin.de/ref/19621044
+4238371,MEGABANK JSC,Ukraine,2022,Declared insolvent by NBU (Jun 2022); problems predate the war,failure,verified,https://bank.gov.ua/en/news/all/at-megabank-vidneseno-do-kategoriyi-neplatospromojnih
+4275557,Getin Noble Bank S.A.,Poland,2022,Resolution by BFG (30 Sep 2022),resolution,verified,https://bfg.pl/en/?p=15344

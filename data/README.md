@@ -28,3 +28,17 @@ The loader accepts common variations in spacing and capitalisation and converts 
 
 Do not commit licensed exports, annual-report PDFs, credentials, or API keys.
 
+
+## Files compiled for the CAMELS scorecard
+
+These files are published. Each row carries its source or status; docs/SOURCES.md lists them all.
+
+| File | Content |
+|---|---|
+| `events.csv` | 48 distress events at 43 banks, 2010–2021: failure, resolution, state aid, bail-in, distressed recapitalisation. `STATUS` is `verified` (official or primary source in `SOURCE`) or `seed_not_rechecked` |
+| `parents.csv` | Foreign-owned subsidiaries and their parents: support level, period, optional parent rating, parent stress years with reason |
+| `sovereign_ratings.csv` | Fitch long-term foreign-currency sovereign rating at 31 December, 18 countries, 2010–2021 |
+| `overlays.csv` | Analyst overlays (empty template): factor, notches, reason, analyst, date |
+
+`ID` is the bank identifier of the 2023 panel. The panel itself (`run_pipeline.py --input`) is
+not included; see the main README.
