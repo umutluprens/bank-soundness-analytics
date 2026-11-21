@@ -13,3 +13,6 @@ results/
 
 results*/
 .pytest_cache/
+
+!data/open/*.csv
+!templates/*.csv

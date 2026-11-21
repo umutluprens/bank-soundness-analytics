@@ -3,8 +3,8 @@ Phase 2, first version: walk-forward forecast of next year's score.
 
   python run_forecast.py --capiq-folder "<...>/Final Report/Data" --events data/events.csv --out results/forecast
   python run_forecast.py --synthetic --out results_synthetic/forecast
-  # with macro expectations (COUNTRY, YEAR = publication year, forecast columns):
-  python run_forecast.py ... --macro weo_vintages.csv
+  # with macro expectations (IMF WEO October vintages, tools/fetch_open_data.py):
+  python run_forecast.py ... --macro data/open/weo_vintages.csv
 
 Writes forecast_by_bank_year.csv (every forecast with its realised outcome) and forecast_report.json.
 """
@@ -22,7 +22,8 @@ from camels_score.forecast import walk_forward, evaluate
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--input"); ap.add_argument("--capiq-folder"); ap.add_argument("--synthetic", action="store_true")
-    ap.add_argument("--events"); ap.add_argument("--macro")
+    ap.add_argument("--events"); ap.add_argument("--macro", help="WEO vintage file from tools/fetch_open_data.py")
+    ap.add_argument("--open-oe", help="World Bank indicator file: use the open country score")
     ap.add_argument("--calib-end", type=int, default=2017)
     ap.add_argument("--first-target", type=int, default=2014)
     ap.add_argument("--no-ratio-route", action="store_true")
@@ -41,8 +42,15 @@ def main():
         raw = load(a.input)
     if a.events:
         events = pd.read_csv(a.events)
-    macro = pd.read_csv(a.macro) if a.macro else None
+    from camels_score.forecast import load_macro
+    macro = load_macro(a.macro) if a.macro else None
 
+    if a.open_oe:
+        from camels_score.oe import build_open_oe
+        oe, _ = build_open_oe(a.open_oe, a.calib_end)
+        raw.columns = [str(c).strip().upper() for c in raw.columns]
+        raw = raw.drop(columns=[c for c in ("OE_SCORE",) if c in raw.columns]).merge(
+            oe[["COUNTRY", "YEAR", "OE_SCORE"]], on=["COUNTRY", "YEAR"], how="left")
     df, ratios, unimputed, basis = prepare(raw, return_reference=True)
     scorer = CamelsScorer().fit(df[df["YEAR"] <= a.calib_end], ratios,
                                  reference=basis[basis["YEAR"] <= a.calib_end])

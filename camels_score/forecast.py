@@ -157,3 +157,16 @@ def evaluate(fc, events=None, horizon=2):
             res["event_auc"] = {c: round(float(roc_auc_score(fc["EVENT_NEXT"], fc[c])), 3) for c in routes}
             res["event_bank_years"] = int(fc["EVENT_NEXT"].sum())
     return res, fc
+
+
+def load_macro(path):
+    """Tidy WEO vintage file (tools/fetch_open_data.py) -> one row per COUNTRY and YEAR = vintage
+    year, with the forecast for the current and the next year as known in October of that year."""
+    w = pd.read_csv(path)
+    w["H"] = np.where(w["TARGET_YEAR"] == w["VINTAGE_YEAR"], "NOW", "NEXT")
+    t = w.pivot_table(index=["COUNTRY", "VINTAGE_YEAR"], columns=["NAME", "H"], values="VALUE")
+    t.columns = [f"{n.replace('_FORECAST', '')}_{h}" for n, h in t.columns]
+    for n in ("GDP_GROWTH", "INFLATION", "UNEMPLOYMENT"):
+        if f"{n}_NEXT" in t and f"{n}_NOW" in t:
+            t[f"{n}_CHANGE"] = t[f"{n}_NEXT"] - t[f"{n}_NOW"]
+    return t.reset_index().rename(columns={"VINTAGE_YEAR": "YEAR"})

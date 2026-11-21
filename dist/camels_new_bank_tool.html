@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CAMELS New Bank Grader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work tool for an FI credit analyst
+   IDEA a precision instrument: one long graded scale with a pointer
+   PICTURE the 1-10 soundness scale, pointer at the final score, standalone and earlier years marked
+   COLOUR aluminium ground, black ink, orange pointer
+   TYPE Geist throughout, weights for contrast
+   LAYOUT readout and scale across the top; ratio inputs left, settings and breakdown right; stacked on a phone */
+:root{color-scheme:light dark;--bg:light-dark(#e9eaec,#141517);--panel:light-dark(#f7f7f8,#1d1f22);--ink:light-dark(#111,#ececec);--mute:light-dark(#5b5f66,#a2a7ae);--line:light-dark(#c9ccd1,#33363b);--acc:#ff4f00;--z1:light-dark(#d4d7db,#2a2d31);--z2:light-dark(#c3c7cc,#33373c)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Geist,system-ui,sans-serif;overflow-x:clip}
+.band{padding:clamp(20px,3vw,40px) max(4vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+h1{font-size:clamp(28px,3.4vw,40px);line-height:1.05;letter-spacing:-.02em;margin:0;font-weight:700;text-wrap:balance}
+h2{font-size:19px;margin:0 0 10px;font-weight:600}
+.sub{color:var(--mute);margin:6px 0 0;max-width:68ch}
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px;align-items:end}
+.read{text-align:right}
+.read .g{font-size:clamp(56px,8vw,88px);font-weight:700;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.read .d{font-size:19px;font-weight:600}
+.read .s{color:var(--mute);font-size:14px}
+.scale{position:relative;margin:26px 0 6px;height:112px}
+.zones{position:absolute;left:0;right:0;top:34px;height:30px;display:grid;grid-template-columns:2fr 2fr 2fr 2fr 1fr 1fr;border-radius:4px;overflow:hidden}
+.zones div{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--ink);white-space:nowrap;overflow:hidden}
+.zones div:nth-child(odd){background:var(--z1)}.zones div:nth-child(even){background:var(--z2)}
+.ticks{position:absolute;left:0;right:0;top:66px;height:18px}
+.ticks span{position:absolute;transform:translateX(-50%);font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.ptr{position:absolute;top:0;width:2px;height:66px;background:var(--acc);transition:left .35s ease}
+.ptr::after{content:attr(data-v);position:absolute;top:-2px;left:6px;font-size:14px;font-weight:700;color:var(--acc);white-space:nowrap}
+.mk{position:absolute;top:34px;width:12px;height:12px;margin-left:-6px;border-radius:50%;border:2px solid var(--ink);background:var(--bg)}
+.mk.yr{background:var(--ink);width:8px;height:8px;margin-left:-4px;top:22px;border:0;opacity:.55}
+.sh{display:none}
+.mklab{position:absolute;top:88px;transform:translateX(-50%);font-size:13px;color:var(--mute);white-space:nowrap}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--mute)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:20px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px}
+.panel+.panel{margin-top:20px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{padding:6px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:13px;color:var(--mute);font-weight:500}
+td.n,th.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.rn{font-weight:500;font-size:15px}.rd{font-size:13px;color:var(--mute);line-height:1.3}
+input,select{font:16px Geist,system-ui,sans-serif;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px;min-height:44px;width:100%}
+input:focus,select:focus,button:focus,textarea:focus{outline:2px solid var(--acc);outline-offset:1px}
+td input{width:6.2em;text-align:right;font-variant-numeric:tabular-nums}
+th input{width:5.2em;text-align:right;font-weight:600;color:var(--ink)}
+.fld{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+label{display:block;font-size:14px;font-weight:500;margin-bottom:4px}
+.hint{font-size:13px;color:var(--mute);margin:4px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button{font:500 15px Geist,system-ui,sans-serif;min-height:44px;padding:0 16px;border-radius:6px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+button.pri{background:var(--ink);color:var(--bg)}
+button:hover{border-color:var(--acc)}
+.chk{display:flex;align-items:center;gap:8px;font-size:15px;min-height:44px}
+.chk input{width:20px;min-height:20px}
+.steps li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;padding:7px 0;border-bottom:1px solid var(--line)}
+.steps{list-style:none;margin:0;padding:0}
+.steps b{font-variant-numeric:tabular-nums}
+.pb{display:grid;grid-template-columns:7.5em minmax(0,1fr) 3.4em;gap:10px;align-items:center;padding:5px 0;font-size:15px}
+.pbar{position:relative;height:14px;background:var(--z1);border-radius:3px}
+.pbar::before{content:"";position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--mute)}
+.pbar span{position:absolute;top:0;bottom:0;background:var(--ink);border-radius:2px}
+.pbar span.neg{background:var(--acc)}
+.flag{color:var(--acc);font-weight:600}
+.note{font-size:13px;color:var(--mute)}
+textarea{width:100%;min-height:120px;font:14px ui-monospace,monospace;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px}
+details summary{cursor:pointer;font-weight:500;min-height:44px;display:flex;align-items:center}
+.bar{display:none}
+@media(max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.top{grid-template-columns:minmax(0,1fr)}.read{text-align:left}.zones div{font-size:12px}.mklab{display:none}.lf{display:none}.sh{display:inline}.rd{display:none}td input{width:4.4em}th input{width:4.4em}
+.bar{display:flex;position:sticky;top:0;z-index:5;background:var(--ink);color:var(--bg);padding:8px 16px;gap:10px;font-weight:600}
+.fld{grid-template-columns:minmax(0,1fr)}.pb{grid-template-columns:6em minmax(0,1fr) 3em}}
+@media(prefers-reduced-motion:reduce){.ptr{transition:none}}
+</style>
+</head>
+<body>
+<div class="bar" id="bar"></div>
+<section class="band">
+ <div class="wrap">
+  <div class="top">
+   <div>
+    <h1>Grade a new bank</h1>
+    <p class="sub">Enter up to three years of ratios from the annual report. The bank is scored on the frozen CAMELS yardstick of the 2010–2021 European panel: same medians, weights, country cap, loss notch and group support rule.</p>
+   </div>
+   <div class="read" aria-live="polite"><div class="g" id="rg">–</div><div class="d" id="rd"></div><div class="s" id="rs"></div></div>
+  </div>
+  <div class="scale" id="scale">
+   <div class="zones"><div><span class="lf">Very strong</span><span class="sh">V. strong</span></div><div>Strong</div><div>Adequate</div><div>Moderate</div><div><span class="lf">Weak</span><span class="sh">W</span></div><div><span class="lf">Very weak</span><span class="sh">VW</span></div></div>
+   <div class="ticks" id="ticks"></div>
+   <div id="marks"></div>
+   <div class="ptr" id="ptr"></div>
+  </div>
+  <div class="legend"><span><i style="background:var(--acc)"></i>Final score</span><span><i style="border:2px solid var(--ink)"></i>Standalone, ratios only</span><span><i style="background:var(--ink);opacity:.55"></i>Earlier years</span></div>
+ </div>
+</section>
+<section class="band" style="padding-top:0">
+ <div class="wrap grid">
+  <div>
+   <div class="panel">
+    <h2>Ratios, % unless noted</h2>
+    <div class="scroll"><table id="tin"></table></div>
+    <p class="note" id="samp">Filled with a fictitious example bank. Clear it to enter your own. An empty cell is treated as not reported and filled with a weak value, as in the panel.</p>
+    <div class="row"><button class="pri" id="clear">Clear ratios</button><button id="example">Load example</button><button id="copy">Copy result</button></div>
+    <details><summary>Paste from a spreadsheet</summary>
+     <p class="hint">Paste 13 rows in the order of the table, one column per year (tab or comma separated). The first row may hold the years.</p>
+     <textarea id="paste" aria-label="Pasted ratios"></textarea>
+     <div class="row"><button id="apply">Use pasted values</button></div>
+    </details>
+   </div>
+  </div>
+  <div>
+   <div class="panel">
+    <h2>Bank and group</h2>
+    <div class="fld">
+     <div><label for="name">Bank name</label><input id="name" value="Example Bank"></div>
+     <div><label for="oe">Country score, 1 strong to 10 weak</label><select id="oe"></select></div>
+     <div><label for="sov">Sovereign rating, foreign currency</label><select id="sov"></select></div>
+     <div><label for="ov">Analyst overlay, notches</label><select id="ov"></select></div>
+     <div><label for="sup">Parent support</label><select id="sup"><option value="none">None</option><option value="moderate">Moderate (0.15)</option><option value="strategic">Strategic (0.35)</option><option value="core">Core (0.50)</option></select></div>
+     <div><label for="par">Parent rating</label><select id="par"></select></div>
+     <div><label for="share">Assets as share of parent, %</label><input id="share" inputmode="decimal" placeholder="e.g. 8"></div>
+     <div><label class="chk"><input type="checkbox" id="stress">Parent under stress</label></div>
+    </div>
+    <p class="hint">Country score: use BICRA if you have it, otherwise your own view of the banking system on the same 1–10 scale. Overlay: positive is weaker, at most ±2, record the reason in your file.</p>
+   </div>
+   <div class="panel"><h2 id="sh">How the grade was built</h2><ul class="steps" id="steps"></ul><p class="note" id="dq"></p></div>
+   <div class="panel"><h2>Pillars, latest year</h2><div id="pil"></div><p class="note">Bars show the oriented z-score: right of the line is sounder than the typical bank, left is weaker.</p></div>
+  </div>
+ </div>
+</section>
+<section class="band" style="padding-top:0">
+ <div class="wrap panel">
+  <h2>Ratio detail, latest year</h2>
+  <div class="scroll"><table id="tdet"></table></div>
+  <p class="note">Asset quality and earnings ratios are scored on the weaker of the latest value and the three-year average. Values outside the calibration's 1st to 99th percentile are capped. Capital ratios add at most z = +1.</p>
+ </div>
+</section>
+<script>/* camels-score: scoring of one new bank in the browser. Mirrors camels_score/newbank.py;
+   tests/test_newbank.py runs both on the same inputs. */
+var CamelsTool = (function () {
+  var RATING = {"AAA":1,"AA+":1,"AA":1,"AA-":1,"A+":2,"A":2,"A-":3,"BBB+":4,"BBB":4,"BBB-":5,
+    "BB+":6,"BB":6,"BB-":7,"B+":8,"B":8,"B-":9,"CCC+":10,"CCC":10,"CCC-":10,"CC":10,"C":10,"RD":10,"D":10};
+  var PROB = {core:0.5, strategic:0.35, moderate:0.15, none:0};
+  var ABILITY = [[0.20,0.50],[0.10,0.75]];
+  var DESC = {1:"Very strong",2:"Very strong",3:"Strong",4:"Strong",5:"Adequate",6:"Adequate",
+    7:"Moderate",8:"Moderate",9:"Weak",10:"Very weak"};
+  function clip(x, lo, hi) { return Math.min(Math.max(x, lo), hi); }
+  function rhe(x) { var f = Math.floor(x), d = x - f;            // round half to even, as numpy
+    if (Math.abs(d - 0.5) < 1e-12) return (f % 2 === 0) ? f : f + 1; return Math.round(x); }
+  function std(a) { var m = a.reduce(function (s, v) { return s + v; }, 0) / a.length;
+    return Math.sqrt(a.reduce(function (s, v) { return s + (v - m) * (v - m); }, 0) / (a.length - 1)); }
+  function interp(x, xs, ys) {
+    if (x <= xs[0]) return ys[0]; if (x >= xs[xs.length - 1]) return ys[ys.length - 1];
+    for (var i = 1; i < xs.length; i++) if (x <= xs[i])
+      return ys[i - 1] + (ys[i] - ys[i - 1]) * (x - xs[i - 1]) / (xs[i] - xs[i - 1]);
+  }
+  function label(score) { var g = clip(rhe(score), 1, 10), f = score - g;
+    return {grade: g, label: g + (f <= -1 / 6 ? "+" : f >= 1 / 6 ? "-" : "")}; }
+
+  function score(years, calib, o) {
+    o = o || {};
+    var P = calib.params, cfg = calib.config, nb = P.new_bank, R = P.ratios;
+    var yrs = Object.keys(years).map(Number).sort(function (a, b) { return a - b; });
+    var raw = {}, cl = {};
+    yrs.forEach(function (y) {
+      var row = {};
+      R.forEach(function (r) {
+        var v = years[y][r]; v = (v === "" || v === null || v === undefined) ? null : Number(v);
+        if (v !== null && isNaN(v)) v = null;
+        if (v !== null) { var b = nb[r].bounds;
+          if ((b[0] !== null && v < b[0]) || (b[1] !== null && v > b[1])) v = null; }
+        row[r] = v;
+      });
+      raw[y] = row;
+    });
+    yrs.forEach(function (y, i) {
+      var i0 = Math.max(0, i - 2), last3 = yrs.slice(i0, i + 1).map(function (yy) { return raw[yy].ROAA; });
+      var ok = last3.length === 3 && last3.every(function (v) { return v !== null; }) && yrs[i] - yrs[i0] === 2;
+      if (R.indexOf("ROAA VOLATILITY 3Y") >= 0) raw[y]["ROAA VOLATILITY 3Y"] = ok ? std(last3) : null;
+      cl[y] = {};
+      R.forEach(function (r) { var v = raw[y][r];
+        cl[y][r] = v === null ? null : clip(v, nb[r].p01, nb[r].p99); });
+    });
+    var out = yrs.map(function (y) {
+      var steps = [], used = {}, imputed = [], z = {};
+      R.forEach(function (r) {
+        var v = cl[y][r];
+        if (nb[r].through_cycle && v !== null) {
+          var w = yrs.filter(function (yy) { return yy >= y - 2 && yy <= y && cl[yy][r] !== null; })
+                     .map(function (yy) { return cl[yy][r]; });
+          if (w.length >= 2) { var avg = w.reduce(function (s, x) { return s + x; }, 0) / w.length;
+            v = nb[r].direction === 1 ? Math.min(v, avg) : Math.max(v, avg); }
+        }
+        if (v === null) { v = nb[r].weak_fill; imputed.push(r); }
+        used[r] = v;
+        var zz = nb[r].direction * (v - P.centre[r]) / P.scale[r];
+        if (nb[r].pillar === "C" && P.capital_z_cap !== null && P.capital_z_cap !== undefined) zz = Math.min(zz, P.capital_z_cap);
+        z[r] = clip(zz, -3, 3);
+      });
+      var pl = {}, order = [];
+      R.forEach(function (r) { var p = nb[r].pillar; if (!pl[p]) { pl[p] = []; order.push(p); } pl[p].push(z[r]); });
+      var pillars = {}, tw = 0, comp = 0;
+      order.forEach(function (p) { pillars[p] = pl[p].reduce(function (s, x) { return s + x; }, 0) / pl[p].length;
+        tw += (P.weights[p] || 0); });
+      order.forEach(function (p) { comp += pillars[p] * (P.weights[p] || 0) / tw; });
+      var c = P.composite_cuts, n = cfg.n_grades, qs = [];
+      for (var k = 1; k < n; k++) qs.push(k / n);
+      var xs = [c[0] - (c[1] - c[0])].concat(c, [c[c.length - 1] + (c[c.length - 1] - c[c.length - 2])]);
+      var pct = interp(comp, xs, [0].concat(qs, [1]));
+      var standalone = clip(10.5 - 10 * pct, 1, 10), sc = standalone;
+      steps.push(["Standalone, from the ratios", standalone]);
+      var oe = null;
+      if (o.countryScore !== null && o.countryScore !== undefined && o.countryScore !== "") {
+        oe = clip(Number(o.countryScore), 1, 10);
+        sc = Math.max(cfg.oe_weight * oe + (1 - cfg.oe_weight) * standalone, Math.max(oe - cfg.max_uplift, 1));
+        steps.push(["Country score " + oe + ": 15% blend, cap of " + cfg.max_uplift + " notches", sc]);
+      }
+      var notch = 0;
+      if (cfg.loss_notch) { notch = used.ROAA < -1 ? 2 : used.ROAA < 0 ? 1 : 0;
+        sc += notch; if (notch) steps.push(["Loss notch +" + notch, sc]); }
+      var own = clip(sc, 1, 10), fin = own, pUsed = 0;
+      var parent = o.parentRating ? RATING[o.parentRating] :
+        (o.parentScore !== null && o.parentScore !== undefined && o.parentScore !== "" ? Number(o.parentScore) : null);
+      var sov = o.sovereignRating ? RATING[o.sovereignRating] : null;
+      var lvl = o.supportLevel || "none";
+      if (parent !== null && parent !== undefined && lvl !== "none") {
+        var p = Math.min(PROB[lvl] || 0, 0.5), ab = 1;
+        if (o.assetsShare !== null && o.assetsShare !== undefined && o.assetsShare !== "")
+          for (var a = 0; a < ABILITY.length; a++) if (Number(o.assetsShare) > ABILITY[a][0]) { ab = ABILITY[a][1]; break; }
+        p = o.parentStress ? 0 : p * ab;
+        var gap = Math.max(own - parent, 0), sup = own - p * gap;
+        if (oe !== null) sup = Math.max(sup, Math.max(oe - 2, 1));
+        if (sov) sup = Math.max(sup, sov);
+        fin = clip(Math.min(sup, own), 1, 10); pUsed = gap > 0 ? p : 0;
+        steps.push(["Group support, probability " + pUsed.toFixed(2), fin]);
+      }
+      if (o.overlay) { fin = clip(fin + clip(Number(o.overlay), -2, 2), 1, 10);
+        steps.push(["Analyst overlay " + (o.overlay > 0 ? "+" : "") + o.overlay, fin]); }
+      var L = label(fin), ratios = {};
+      R.forEach(function (r) { ratios[r] = {entered: raw[y][r], used: used[r], z: z[r], imputed: imputed.indexOf(r) >= 0}; });
+      return {year: y, final_score: fin, grade: L.grade, label: L.label, descriptor: DESC[L.grade],
+        standalone_score: standalone, own_score: own, loss_notch: notch, support_prob: pUsed,
+        composite_z: comp, pillars: pillars, ratios: ratios, reported_ratios: R.length - imputed.length,
+        data_quality: imputed.length / R.length > 0.4 ? "LOW" : "OK", enough_data: R.length - imputed.length >= 5,
+        steps: steps};
+    });
+    return {bank_years: out, latest: out[out.length - 1]};
+  }
+  return {score: score, RATING: RATING, DESC: DESC};
+})();
+if (typeof module !== "undefined") module.exports = CamelsTool;
+</script>
+<script>
+{
+const CALIB = {"config":{"oe_weight":0.15,"max_uplift":2,"max_uplift_supported":4,"n_grades":10,"capital_z_cap":1.0,"loss_notch":true},"params":{"ratios":["TOTAL CAPITAL RATIO","TIER1 RATIO","TOTAL DEBT/ TOTAL EQUITY","PROBLEM LOANS RATIO","TEXAS RATIO","LOAN LOSS RESERVE TO PROBLEM LOANS","COST TO INCOME RATIO","OPERATING RETURN ON ASSETS","ROAA","ROAE","NET INTEREST MARGIN","BOOKVALUE PER SHARE GROWTH","ROAA VOLATILITY 3Y","LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS"],"centre":{"TOTAL CAPITAL RATIO":16.712703705887698,"TIER1 RATIO":14.7589543580756,"TOTAL DEBT/ TOTAL EQUITY":0.47964842285742804,"PROBLEM LOANS RATIO":6.28018066094834,"TEXAS RATIO":31.912300452067804,"LOAN LOSS RESERVE TO PROBLEM LOANS":53.1306306306306,"COST TO INCOME RATIO":67.87613918500674,"OPERATING RETURN ON ASSETS":3.090334101721187,"ROAA":0.283330887437917,"ROAE":3.2859680978730386,"NET INTEREST MARGIN":1.89061213415534,"BOOKVALUE PER SHARE GROWTH":2.62063227953411,"ROAA VOLATILITY 3Y":0.21787595161456141,"LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS":35.6816974708732},"scale":{"TOTAL CAPITAL RATIO":4.970513077875208,"TIER1 RATIO":5.211894135017996,"TOTAL DEBT/ TOTAL EQUITY":0.7111267517284228,"PROBLEM LOANS RATIO":6.7179091437627685,"TEXAS RATIO":33.09652805348335,"LOAN LOSS RESERVE TO PROBLEM LOANS":24.80157011528307,"COST TO INCOME RATIO":17.37539741411692,"OPERATING RETURN ON ASSETS":1.7691082758911112,"ROAA":0.535183444744397,"ROAE":5.730987625411147,"NET INTEREST MARGIN":1.1230042021130415,"BOOKVALUE PER SHARE GROWTH":7.837197856342994,"ROAA VOLATILITY 3Y":0.2486345908108601,"LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS":21.286009364661723},"weights":{"C":0.2,"A":0.3,"M":0.05,"E":0.25,"L":0.15,"S":0.05},"capital_z_cap":1.0,"loss_notch":true,"composite_cuts":[-0.9463081646748601,-0.6214570810795481,-0.404408996610575,-0.25701725320610086,-0.12873112135700404,-0.009050805517027888,0.1193976643932939,0.28158405407898773,0.48754716936878],"pillar_cuts":{"C":[-1.3494591260779998,-1.0019921538663599,-0.6758620547305068,-0.4031963355402696,-0.2345479723891907,-0.027760925817001143,0.1590117884897208,0.4012978183054975,0.7574145670065356],"A":[-1.7869275886111005,-1.1399297639218846,-0.7243085203305634,-0.3429961507400315,-0.18928573641022908,-0.009612325780271106,0.18426181633376074,0.43949659676347796,0.8683021495212417],"M":[-1.071022209923625,-0.587399803945052,-0.32392122097634074,-0.14332253598922673,0.025072389001906836,0.21966685650142548,0.4478872461518882,0.7768075056449728,1.2899114118157926],"E":[-1.6346550164941052,-0.8730342226201102,-0.5282946511872934,-0.3217789841017146,-0.12976359099103907,0.04625363719176242,0.2393244152370292,0.4864238105655201,0.9229612434510038],"L":[-0.8592798211279805,-0.6378270188073313,-0.4941512003326258,-0.36553804058413825,-0.21303962717175304,0.02300797896487713,0.38177950724707604,0.9613048866012687,2.0885286943263552]},"new_bank":{"TOTAL CAPITAL RATIO":{"p01":8.693374455751812,"p99":72.8818792440632,"weak_fill":13.932046281579325,"direction":1,"pillar":"C","bounds":[0,100],"through_cycle":false,"definition":"Total regulatory capital / risk-weighted assets"},"TIER1 RATIO":{"p01":5.882366942756346,"p99":68.76787801208755,"weak_fill":11.7096918600699,"direction":1,"pillar":"C","bounds":[0,100],"through_cycle":false,"definition":"Tier 1 capital / risk-weighted assets"},"TOTAL DEBT/ TOTAL EQUITY":{"p01":0.0,"p99":10.041309893918992,"weak_fill":2.03335745626873,"direction":-1,"pillar":"C","bounds":[0,5000],"through_cycle":false,"definition":"Total debt (borrowings, debt securities, subordinated debt) / total equity, multiple"},"PROBLEM LOANS RATIO":{"p01":0.0,"p99":76.475948619143,"weak_fill":15.1374845564955,"direction":-1,"pillar":"A","bounds":[0,100],"through_cycle":true,"definition":"Problem (non-performing, Stage 3) loans / gross customer loans"},"TEXAS RATIO":{"p01":0.0,"p99":179.31138305316318,"weak_fill":66.81404163679578,"direction":-1,"pillar":"A","bounds":[0,1000],"through_cycle":true,"definition":"Problem loans / (tangible equity + loan loss reserves)"},"LOAN LOSS RESERVE TO PROBLEM LOANS":{"p01":5.754723281076631,"p99":285.1976292456479,"weak_fill":39.63478174663525,"direction":1,"pillar":"A","bounds":[0,1000],"through_cycle":true,"definition":"Loan loss reserves / problem loans (NPL coverage)"},"COST TO INCOME RATIO":{"p01":15.798237178459495,"p99":170.79379328064988,"weak_fill":79.84611288491654,"direction":-1,"pillar":"M","bounds":[0,300],"through_cycle":true,"definition":"Operating expenses / total operating income"},"OPERATING RETURN ON ASSETS":{"p01":0.005947253517800058,"p99":17.27484135280991,"weak_fill":2.0669496971816943,"direction":1,"pillar":"M","bounds":[-30,30],"through_cycle":true,"definition":"Total operating income (before expenses and provisions) / total assets"},"ROAA":{"p01":-8.230631195653105,"p99":6.055382535578286,"weak_fill":0.0,"direction":1,"pillar":"E","bounds":[-30,30],"through_cycle":true,"definition":"Net income / average total assets"},"ROAE":{"p01":-83.77330632538833,"p99":36.71098812545567,"weak_fill":0.0,"direction":1,"pillar":"E","bounds":[-200,100],"through_cycle":true,"definition":"Net income / average total equity"},"NET INTEREST MARGIN":{"p01":0.012542956593832442,"p99":10.908764443910746,"weak_fill":1.2503504533776002,"direction":1,"pillar":"E","bounds":[-5,25],"through_cycle":true,"definition":"Net interest income / average interest-earning assets"},"BOOKVALUE PER SHARE GROWTH":{"p01":-84.07346427831764,"p99":67.59043417312557,"weak_fill":-2.82065753804274,"direction":1,"pillar":"E","bounds":[-100,200],"through_cycle":false,"definition":"Change in book value per share on the previous year"},"ROAA VOLATILITY 3Y":{"p01":0.0,"p99":9.669624219702486,"weak_fill":0.5933801761814711,"direction":-1,"pillar":"E","bounds":[0,30],"through_cycle":false,"definition":"Calculated from three years of ROAA (standard deviation); not entered"},"LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS":{"p01":4.3250771648781585,"p99":190.17008653970777,"weak_fill":23.59497761845875,"direction":1,"pillar":"L","bounds":[0,1000],"through_cycle":false,"definition":"Cash, interbank and liquid securities / (deposits + borrowings)"}}}};
+const P = CALIB.params, NB = P.new_bank;
+const R = P.ratios.filter(r => r !== "ROAA VOLATILITY 3Y");
+const NAMES = {"TOTAL CAPITAL RATIO":"Total capital ratio","TIER1 RATIO":"Tier 1 ratio","TOTAL DEBT/ TOTAL EQUITY":"Total debt / equity (x)","PROBLEM LOANS RATIO":"Problem loans ratio","TEXAS RATIO":"Texas ratio","LOAN LOSS RESERVE TO PROBLEM LOANS":"Reserves / problem loans","COST TO INCOME RATIO":"Cost to income","OPERATING RETURN ON ASSETS":"Operating income / assets","ROAA":"ROAA","ROAE":"ROAE","NET INTEREST MARGIN":"Net interest margin","BOOKVALUE PER SHARE GROWTH":"Book value per share growth","ROAA VOLATILITY 3Y":"ROAA volatility, 3 years","LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS":"Liquid assets / deposits and borrowings"};
+const PN = {C:"Capital",A:"Asset quality",M:"Management",E:"Earnings",L:"Liquidity",S:"Sensitivity"};
+const EX = {years:[2023,2024,2025], v:{"TOTAL CAPITAL RATIO":[16.2,16.8,17.1],"TIER1 RATIO":[13.9,14.4,14.8],"TOTAL DEBT/ TOTAL EQUITY":[0.9,0.85,0.8],"PROBLEM LOANS RATIO":[7.8,7.1,6.6],"TEXAS RATIO":[41,37,34],"LOAN LOSS RESERVE TO PROBLEM LOANS":[52,55,57],"COST TO INCOME RATIO":[66,64,62],"OPERATING RETURN ON ASSETS":[3.0,3.2,3.3],"ROAA":[0.25,0.4,0.55],"ROAE":[2.6,4.0,5.4],"NET INTEREST MARGIN":[1.9,2.1,2.2],"BOOKVALUE PER SHARE GROWTH":[1.5,3.2,4.0],"LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS":[30,32,33]}, oe:4, sov:"BBB", name:"Example Bank"};
+const RAT = Object.keys(CamelsTool.RATING);
+const $ = id => document.getElementById(id);
+const opt = (vals, sel, lab) => vals.map(v => `<option value="${v}"${String(v) === String(sel) ? " selected" : ""}>${lab ? lab(v) : v}</option>`).join("");
+$("oe").innerHTML = `<option value="">Not set</option>` + opt([1,2,3,4,5,6,7,8,9,10], 4);
+$("sov").innerHTML = `<option value="">Not set</option>` + opt(RAT, "BBB");
+$("par").innerHTML = `<option value="">Not set</option>` + opt(RAT, "");
+$("ov").innerHTML = opt([-2,-1,0,1,2], 0, v => v > 0 ? "+" + v : String(v));
+let years = EX.years.slice(), vals = {};
+const fmt = (x, d = 2) => (x === null || x === undefined || isNaN(x)) ? "–" : Number(x).toFixed(d);
+function drawInputs() {
+  $("tin").innerHTML = `<thead><tr><th>Ratio</th>${years.map((y, i) => `<th class="n"><input id="y${i}" value="${y}" inputmode="numeric" aria-label="Year ${i + 1}"></th>`).join("")}</tr></thead><tbody>` +
+    R.map((r, k) => `<tr><td><div class="rn">${NAMES[r]}</div><div class="rd">${NB[r].definition}</div></td>${years.map((y, i) => `<td class="n"><input id="v${k}_${i}" inputmode="decimal" aria-label="${NAMES[r]} ${y}" value="${vals[r] && vals[r][i] !== null && vals[r][i] !== undefined ? vals[r][i] : ""}"></td>`).join("")}</tr>`).join("") + "</tbody>";
+}
+function readInputs() {
+  years = years.map((y, i) => Number($("y" + i).value) || y);
+  R.forEach((r, k) => vals[r] = years.map((y, i) => { const t = $("v" + k + "_" + i).value.trim().replace(",", "."); return t === "" ? null : Number(t); }));
+}
+function settings() {
+  const s = $("share").value.trim().replace(",", ".");
+  return {countryScore: $("oe").value === "" ? null : Number($("oe").value), sovereignRating: $("sov").value || null,
+    parentRating: $("par").value || null, supportLevel: $("sup").value, assetsShare: s === "" ? null : Number(s) / 100,
+    parentStress: $("stress").checked, overlay: Number($("ov").value)};
+}
+const pos = x => ((x - 0.5) / 10 * 100) + "%";
+$("ticks").innerHTML = [1,2,3,4,5,6,7,8,9,10].map(g => `<span style="left:${pos(g)}">${g}</span>`).join("");
+let last = null;
+function run() {
+  readInputs();
+  const ys = {};
+  years.forEach((y, i) => { const row = {}; let any = false;
+    R.forEach(r => { row[r] = vals[r][i]; if (vals[r][i] !== null) any = true; }); if (any) ys[y] = row; });
+  if (!Object.keys(ys).length) { $("rg").textContent = "–"; $("rd").textContent = "Enter at least one year"; $("rs").textContent = ""; $("steps").innerHTML = ""; $("pil").innerHTML = ""; $("tdet").innerHTML = ""; $("marks").innerHTML = ""; $("bar").textContent = "No data"; save(); return; }
+  const res = CamelsTool.score(ys, CALIB, settings()), L = res.latest; last = res;
+  $("rg").textContent = L.label; $("rd").textContent = L.descriptor;
+  $("rs").textContent = `Score ${fmt(L.final_score)} for ${L.year}`;
+  $("bar").textContent = `${$("name").value || "Bank"} ${L.year}: ${L.label}, ${L.descriptor}, ${fmt(L.final_score)}`;
+  $("ptr").style.left = pos(L.final_score); $("ptr").dataset.v = fmt(L.final_score);
+  $("marks").innerHTML = `<div class="mk" style="left:${pos(L.standalone_score)}" title="Standalone ${fmt(L.standalone_score)}"></div>` +
+    res.bank_years.slice(0, -1).map(b => `<div class="mk yr" style="left:${pos(b.final_score)}" title="${b.year}: ${b.label}"></div><span class="mklab" style="left:${pos(b.final_score)}">${b.year} ${b.label}</span>`).join("");
+  $("sh").textContent = `How the ${L.year} grade was built`;
+  $("steps").innerHTML = L.steps.map(s => `<li><span>${s[0]}</span><b>${fmt(s[1])}</b></li>`).join("") +
+    `<li><span><strong>Final grade</strong></span><b>${L.label}</b></li>` +
+    (res.bank_years.length > 1 ? `<li><span>By year</span><b>${res.bank_years.map(b => b.year + " " + b.label).join(", ")}</b></li>` : "");
+  const imp = R.filter(r => L.ratios[r].imputed);
+  $("dq").innerHTML = `${L.reported_ratios} of ${P.ratios.length} ratios reported, data quality ${L.data_quality}.` +
+    (imp.length ? ` <span class="flag">Filled with a weak value: ${imp.map(r => NAMES[r]).join(", ")}.</span>` : "") +
+    (L.enough_data ? "" : ` <span class="flag">Fewer than 5 ratios: the panel would not grade this bank-year.</span>`);
+  $("pil").innerHTML = Object.keys(L.pillars).map(p => { const z = L.pillars[p], w = Math.min(Math.abs(z), 3) / 3 * 50;
+    return `<div class="pb"><span>${PN[p]}</span><div class="pbar"><span class="${z < 0 ? "neg" : ""}" style="left:${z < 0 ? 50 - w : 50}%;width:${w}%"></span></div><span style="text-align:right;font-variant-numeric:tabular-nums">${z > 0 ? "+" : ""}${fmt(z)}</span></div>`; }).join("");
+  $("tdet").innerHTML = `<thead><tr><th>Ratio</th><th class="n">Entered</th><th class="n">Scored</th><th class="n">Median</th><th class="n">z</th></tr></thead><tbody>` +
+    P.ratios.map(r => { const x = L.ratios[r]; return `<tr><td>${NAMES[r]}${x.imputed ? ' <span class="flag">filled</span>' : ""}</td><td class="n">${fmt(x.entered)}</td><td class="n">${fmt(x.used)}</td><td class="n">${fmt(P.centre[r])}</td><td class="n">${x.z > 0 ? "+" : ""}${fmt(x.z)}</td></tr>`; }).join("") + "</tbody>";
+  save();
+}
+function save() { try { localStorage.setItem("camels-newbank", JSON.stringify({years, vals, s: settings(), name: $("name").value})); } catch (e) {} }
+function loadEx() { years = EX.years.slice(); vals = JSON.parse(JSON.stringify(EX.v)); $("name").value = EX.name; $("oe").value = EX.oe; $("sov").value = EX.sov; $("samp").style.display = ""; drawInputs(); run(); }
+try { const st = JSON.parse(localStorage.getItem("camels-newbank") || "null");
+  if (st && st.vals) { years = st.years; vals = st.vals; $("name").value = st.name || "";
+    const s = st.s || {}; $("oe").value = s.countryScore ?? ""; $("sov").value = s.sovereignRating || ""; $("par").value = s.parentRating || "";
+    $("sup").value = s.supportLevel || "none"; $("share").value = s.assetsShare != null ? s.assetsShare * 100 : ""; $("stress").checked = !!s.parentStress; $("ov").value = s.overlay || 0;
+    $("samp").style.display = "none"; } else vals = JSON.parse(JSON.stringify(EX.v)); } catch (e) { vals = JSON.parse(JSON.stringify(EX.v)); }
+drawInputs(); run();
+document.addEventListener("input", e => { if (e.target.closest("#tin") || e.target.closest(".fld")) { if (e.target.closest("#tin")) $("samp").style.display = "none"; run(); } });
+document.addEventListener("change", e => { if (e.target.closest(".fld")) run(); });
+$("clear").addEventListener("click", () => { vals = {}; R.forEach(r => vals[r] = [null, null, null]); $("samp").style.display = "none"; drawInputs(); run(); });
+$("example").addEventListener("click", loadEx);
+$("apply").addEventListener("click", () => {
+  const lines = $("paste").value.trim().split(/\r?\n/).map(l => (/[\t;]/.test(l) ? l.split(/[\t;]/) : l.split(",")).map(c => c.trim()));
+  let rows = lines;
+  if (rows.length && rows[0].every(c => /^\d{4}$/.test(c))) { years = rows[0].slice(0, 3).map(Number); rows = rows.slice(1); }
+  rows = rows.map(r => r.filter(c => c === "" || !isNaN(Number(c.replace(",", "."))))).slice(0, R.length);
+  R.forEach((r, k) => vals[r] = [0, 1, 2].map(i => rows[k] && rows[k][i] !== undefined && rows[k][i] !== "" ? Number(rows[k][i].replace(",", ".")) : null));
+  while (years.length < 3) years.unshift(years[0] - 1);
+  $("samp").style.display = "none"; drawInputs(); run();
+});
+$("copy").addEventListener("click", async () => {
+  if (!last) return; const L = last.latest;
+  const txt = `${$("name").value} ${L.year}: grade ${L.label} (${L.descriptor}), score ${fmt(L.final_score)}\n` +
+    L.steps.map(s => `${s[0]}: ${fmt(s[1])}`).join("\n") + `\nPillars: ${Object.keys(L.pillars).map(p => PN[p] + " " + fmt(L.pillars[p])).join(", ")}\nBy year: ${last.bank_years.map(b => b.year + " " + b.label).join(", ")}`;
+  try { await navigator.clipboard.writeText(txt); $("copy").textContent = "Copied"; } catch (e) { $("copy").textContent = "Copy not allowed here"; }
+  setTimeout(() => $("copy").textContent = "Copy result", 1800);
+});
+}
+</script>
+</body>
+</html>

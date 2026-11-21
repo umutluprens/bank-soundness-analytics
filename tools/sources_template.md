@@ -58,7 +58,18 @@ Checks and corrections:
 |---|---|---|---|
 {un}
 
-## E. Public data sources for the next download (METHODOLOGY.md section 12)
+## E. Public data in use and downloaded
+
+- World Bank API (`data/open/worldbank_indicators.csv`, licence CC BY 4.0): World Development
+  Indicators, Global Financial Development (source 32) and Worldwide Governance Indicators
+  (source 3), for example https://api.worldbank.org/v2/country/TUR/indicator/FB.AST.NPER.ZS?format=json .
+  Used for the open operating-environment score.
+- IMF World Economic Outlook, October vintages 2010–2021 (April 2011 for 2011), through DBnomics
+  (`data/open/weo_vintages.csv`): https://db.nomics.world/IMF , series such as
+  https://api.db.nomics.world/v22/series/IMF/WEO:2015-10/TUR.NGDP_RPCH.pcent_change . Used for the
+  macro expectations test in phase 2.
+
+Further sources for bank-level data:
 
 - EBA EU-wide Transparency Exercise, bank-by-bank data for about 120 EU and EEA banks; discontinued
   after the 2025 exercise: https://www.eba.europa.eu/risk-and-data-analysis/risk-analysis/eu-wide-transparency-exercise ,

@@ -1,4 +1,4 @@
-# Fix log: 2023 UCD CAMELS project → camels-score v0.8
+# Fix log: 2023 UCD CAMELS project → camels-score v0.9
 
 Sources reviewed: FDS Final Report (Executive Style), 21 April 2023, with its code appendix, and
 the original 2023 data folder (CAMELS_2010–2021.xlsx, Data_Management_2.xlsx, BICRA.xlsx,
@@ -191,12 +191,20 @@ Effect of the new weights: event AUC 0.90 all years (0.91), 0.92 after 2017 (unc
 | 54 | New-bank grader accepts annual-report figures (`--raw`, `templates/raw_items_template.csv`): 18 items per year, ratios calculated with the panel's definitions. Forecast ranges calibrated with conformalised quantile regression (coverage 75% to 79%). |
 | 53 | Phase 2, first version: `camels_score/forecast.py` and `run_forecast.py`. Walk-forward forecast of next year's score by three routes (persistence, direct, ratios scored by the frozen scorecard), downgrade classifier, 80% range, slot for macro expectations. 33 tests. |
 
+## Added in v0.9
+
+| # | Change |
+|---|---|
+| 55 | Open operating-environment score (`camels_score/oe.py`, `--open-oe`) from World Bank WDI, Global Financial Development and Worldwide Governance Indicators. Rank correlation with BICRA 0.81; event AUC 0.90 / 0.93 against 0.90 / 0.92 with BICRA. The pipeline no longer needs a proprietary country score. |
+| 56 | `tools/fetch_open_data.py` downloads the World Bank indicators and the IMF WEO October vintages (through DBnomics) into `data/open/`. |
+| 57 | Macro expectations tested in the forecast (`--macro`): no improvement (error 0.73 against 0.72 notches), so not used by default. |
+| 58 | EBA Transparency Exercise files 2019–2025 (`tr_oth.csv`, metadata) downloaded to `external_data/eba/` for the next step: CET1, leverage, NPE and P&L items for about 120 EU banks. Not yet mapped to the panel. 34 tests. |
+
 ## Still open
 
-1. Public data for the added ratios (CET1, leverage ratio, cost of risk, Stage 2, NSFR,
-   loans/deposits, IRRBB, FX loans), starting with the EBA bulk files (METHODOLOGY.md section 12). Only 14 of the 36 registry ratios are in the 2023 export.
-2. Replace BICRA with an open operating-environment score.
+1. Map the downloaded EBA files to the panel (bank names to IDs, item codes to ratios) to add CET1, leverage ratio, cost of risk and Stage 2, and to extend the panel to 2022–2025. Only 14 of the 36 registry ratios are scored today.
+2. Open country score: put it on a wider country sample so the scale is not relative to 18 countries; add house prices.
 3. Decide on the remaining proposals in METHODOLOGY.md section 11 (cap-only country anchor, absolute bands).
 4. Confirm ownership and support levels in data/parents.csv and enter PARENT_GRADE for the 22 parents outside the panel (VTB, Sberbank, Raiffeisen, Erste, Deutsche Bank, Citi, Banca Popolare di Vicenza and others). Check the Danske Bank Hamburg branch record (assets 68% of the parent's).
 5. Replace the countryeconomy.com sovereign series with Fitch's own history, and add S&P and Moody's from a primary source.
-6. Phase 2: add macro expectations (IMF WEO vintages) and improve the downgrade signal (ROADMAP.md).
+6. Phase 2: improve the downgrade signal with bank-level drivers from the EBA files (ROADMAP.md).

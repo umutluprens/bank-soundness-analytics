@@ -48,6 +48,8 @@ def main():
     ap.add_argument("--extra-ratios", help="tidy ID/YEAR file with extra ratios, e.g. CET1")
     ap.add_argument("--no-multi-year", action="store_true",
                     help="score latest values only (no 3-year weaker-of rule)")
+    ap.add_argument("--open-oe", help="World Bank indicator file (tools/fetch_open_data.py): use the open "
+                                      "operating-environment score in place of BICRA / OE_SCORE")
     ap.add_argument("--synthetic", action="store_true")
     ap.add_argument("--calib-end", type=int, default=2017,
                     help="last year of the calibration sample; later years are out-of-time")
@@ -70,6 +72,14 @@ def main():
 
     if a.extra_ratios:
         raw = merge_extra_ratios(raw, a.extra_ratios)
+    oe_table = None
+    if a.open_oe:
+        from camels_score.oe import build_open_oe
+        oe_table, _ = build_open_oe(a.open_oe, a.calib_end)
+        raw.columns = [str(c).strip().upper() for c in raw.columns]
+        raw = raw.drop(columns=[c for c in ("OE_SCORE",) if c in raw.columns]).merge(
+            oe_table[["COUNTRY", "YEAR", "OE_SCORE"]], on=["COUNTRY", "YEAR"], how="left")
+        print(f"open operating-environment score attached for {raw['OE_SCORE'].notna().mean():.0%} of bank-years")
     df, ratios, unimputed, basis = prepare(raw, multi_year=not a.no_multi_year,
                                            return_reference=True)
     print(f"{len(df):,} bank-years, {df['ID'].nunique():,} banks, {len(ratios)} ratios scored")
@@ -119,6 +129,9 @@ def main():
 
     from camels_score.ratios import GRADE_DESCRIPTOR
     scored["GRADE_DESCRIPTOR"] = scored["FINAL_GRADE"].map(GRADE_DESCRIPTOR)
+    if oe_table is not None:
+        oe_table.to_csv(out / "open_oe_scores.csv", index=False)
+        report["operating_environment"] = "open score (World Bank data)"
     with pd.ExcelWriter(out / "camels_scores.xlsx") as xw:
         keep = [c for c in ["BANK NAME", "ID", "COUNTRY", "YEAR", "TYPE"] if c in scored]
         grade_cols = [c for c in scored.columns if c.startswith("PILLAR_") or c in
