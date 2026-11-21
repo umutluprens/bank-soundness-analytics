@@ -1,6 +1,6 @@
 # CAMELS Bank Soundness Scorecard: Methodology
 
-Version 0.7 (November 2026). Author: Umut Yasar.
+Version 0.8 (November 2026). Author: Umut Yasar.
 Status: working methodology, calibrated and back-tested on the 2023 UCD Capital IQ panel.
 Not reviewed by a model validation function.
 
@@ -301,9 +301,11 @@ best event ranking. With only 10 events after 2017 that is weak evidence, so the
 
 The event file (`data/events.csv`) has 48 events at 43 banks: failures, resolutions, state
 aid, bail-ins, a sovereign-linked default and distressed recapitalisations. Each row shows its
-type and status. 32 events are verified against official or primary sources: national central
-banks, resolution funds, supervisors, the ECB and European Commission decisions. The remaining
-16 are well-documented crisis events not yet re-checked line by line. Four events cannot be
+type and status. All 48 are verified against official or primary sources: national central
+banks, resolution funds, supervisors, the ECB, the ESM, Eurostat and European Commission
+decisions (SOURCES.md). The check reclassified one event: Eurobank's 2015 recapitalisation was
+covered by private investors and a liability management exercise, so it is a distressed
+recapitalisation rather than state aid. It still counts as an event. Four events cannot be
 used because the bank has no data before the event year.
 
 A grade at year t is compared with events in years t+1 and t+2. The scorecard never uses the
@@ -435,6 +437,12 @@ Two steps need peer banks, which a single bank does not have. They use values st
 | Winsorising | 1st and 99th percentile of each year | 1st and 99th percentile of the 2010–2017 calibration window |
 | Missing ratio | Weak-side quartile of country-year peers | Weak-side quartile of the calibration window |
 
+The ratios can also be calculated from annual-report figures: `score_new_bank.py --raw` reads
+18 balance sheet, income statement and capital items per year
+(`templates/raw_items_template.csv`, any currency) and builds the 13 ratios with the
+definitions of the panel. ROAA, ROAE and NIM use average balances when the previous year is
+given.
+
 ROAA volatility is calculated from three consecutive years of ROAA; with fewer years it is
 treated as missing. The country score is entered by the analyst on the 1 to 10 scale (BICRA, if
 available, or the analyst's own view of the banking system), and the sovereign and parent
@@ -457,3 +465,4 @@ of a random test set (`tests/test_newbank.py` repeats this check).
 | 0.5 | Continuous score with +/- modifiers, group support as a probability (max 0.5) under the country cap, parent mapping for 68 subsidiaries |
 | 0.6 | Agency comparison applied: through-the-cycle ratios, sovereign cap on support, ability factor, parent stress years, weak-parent flag, bounded qualitative overlay, loader for extra ratios, sources appendix |
 | 0.7 | Pillar weights C 20%, A 30%, M 5%, E 25%, L 15%, S 5%; S&P-style grade descriptors; new-bank scoring (command line and browser tool) |
+| 0.8 | All 48 events verified against official sources; phase 2 forecast, first version (ROADMAP.md) |

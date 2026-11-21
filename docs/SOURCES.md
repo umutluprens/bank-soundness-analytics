@@ -81,7 +81,7 @@ Checks and corrections:
 
 ## D. Distress events (`data/events.csv`)
 
-### Verified against a primary or official source (32)
+### Verified against a primary or official source (48)
 
 | Bank | Country | Year | Event | Source |
 |---|---|---|---|---|
@@ -90,14 +90,26 @@ Checks and corrections:
 | International Bank of Azerbaijan | Azerbaijan | 2017 | Default on USD 3.3bn foreign debt and restructuring (May 2017) | https://www.intellinews.com/94-of-creditors-of-azerbaijan-s-iba-approve-debt-restructuring-plan-125621/ |
 | Amrahbank OJSC | Azerbaijan | 2020 | Licence revoked by Central Bank (28 Apr 2020) | https://www.cbar.az/press-release-2586/azrbaycan-respublikasi-mrkzi-bankinin-mlumati |
 | AGBank OJSC | Azerbaijan | 2020 | Licence revoked by Central Bank (12 May 2020) | https://en.trend.az/business/finance/3238073.html |
+| Dexia SA | Belgium | 2011 | Second state rescue and orderly resolution plan | Commission Decision 2014/189/EU of 28 Dec 2012 (Dexia orderly resolution; describes Oct-Dec 2011 sale of DBB to Belgium and Dec 2011 state guarantees): https://eur-lex.europa.eu/eli/dec/2012/836/oj |
+| Bank of Cyprus Holdings | Cyprus | 2013 | Bail-in of uninsured depositors | Central Bank of Cyprus, Bailing-in of Bank of Cyprus Decree (29 Mar 2013); Bank of Cyprus history page: https://www.bankofcyprus.com/en-gb/group/who-we-are/our-bank/our-history/2010-2020/ |
 | Max Bank A/S | Denmark | 2011 | Failed solvency requirement; wound up via Finansiel Stabilitet (Oct 2011) | https://fs.dk/media/1eab2ogc/fs_annual_report_2011_uk.pdf |
 | Tønder Bank A/S | Denmark | 2012 | Taken over by Finansiel Stabilitet (Nov 2012) | https://admin.finanstilsynet.dk/Media/638513584887639182/Finanstilsynets_aarsrapport2012.pdf |
 | Østjydsk Bank A/S | Denmark | 2018 | Failed solvency requirement; Finansiel Stabilitet involved in transfer | https://finanstilsynet.dk/media/43211/Redegrelse_om_stjydsk_Bank_0820 pdf.pdf |
+| Dexia Crédit Local S.A. | France | 2011 | Part of Dexia group rescue | Commission Decision 2014/189/EU of 28 Dec 2012 (Dexia orderly resolution; describes Oct-Dec 2011 sale of DBB to Belgium and Dec 2011 state guarantees): https://eur-lex.europa.eu/eli/dec/2012/836/oj |
 | Norddeutsche Landesbank Girozentrale | Germany | 2019 | EUR 3.6bn recapitalisation led by owner states (EC: no state aid) | https://www.nordlb.com/nordlb/press/eu-commission-gives-green-light-to-capital-measures |
 | Greensill Bank AG | Germany | 2021 | BaFin moratorium (3 Mar 2021) and insolvency | https://www.bafin.de/ref/19621044 |
 | National Bank of Greece S.A. | Greece | 2013 | HFSF recapitalisation | Commission Decision (EU) 2015/1092 (NBG): HFSF Spring 2013 recapitalisation, https://eur-lex.europa.eu/eli/dec/2015/1092/oj/eng |
 | Piraeus Financial Holdings S.A. | Greece | 2013 | HFSF recapitalisation | Commission Decision (EU) 2015/455 (Piraeus): HFSF Spring 2013 recapitalisation, https://eur-lex.europa.eu/eli/dec/2015/455/oj/eng |
+| Eurobank Ergasias | Greece | 2013 | HFSF recapitalisation | Eurobank announcement 20 Jun 2013 (HFSF acquired 98.56% after recapitalisation): https://www.athexgroup.gr/en/node/736515 ; Commission Decision 2014/885/EU: https://eur-lex.europa.eu/eli/dec/2014/885/oj |
+| National Bank of Greece S.A. | Greece | 2015 | Second recapitalisation after 2015 ECB assessment | ECB press release 31 Oct 2015 (capital shortfall): https://www.ecb.europa.eu/press/pr/date/2015/html/pr151031.en.html ; ESM 8 Dec 2015, EUR 2.71bn for NBG recapitalisation: https://www.esm.europa.eu/print/pdf/node/81 |
+| Piraeus Financial Holdings S.A. | Greece | 2015 | Second recapitalisation after 2015 ECB assessment | ECB press release 31 Oct 2015 (capital shortfall): https://www.ecb.europa.eu/press/pr/date/2015/html/pr151031.en.html ; Eurostat advice 2016 on 2015 recapitalisations (HFSF EUR 2,720mn in Piraeus): https://ec.europa.eu/eurostat/documents/1015035/7142247/Advice-2016-EL-Statistical-treatment-2015-bank-recapitalisations.pdf/01f5a9df-a8be-4d69-b8bc-621b1acc062e |
+| Eurobank Ergasias | Greece | 2015 | Capital shortfall in ECB 2015 assessment, covered by private capital and liability management exercise | ECB press release 31 Oct 2015 (Eurobank shortfall EUR 2,122mn adverse): https://www.ecb.europa.eu/press/pr/date/2015/html/pr151031.en.html ; Eurostat advice 2016 (Eurobank covered needs through private investors only): https://ec.europa.eu/eurostat/documents/1015035/7142247/Advice-2016-EL-Statistical-treatment-2015-bank-recapitalisations.pdf/01f5a9df-a8be-4d69-b8bc-621b1acc062e |
+| Allied Irish Banks, p.l.c. | Ireland | 2011 | State recapitalisation after 2011 PCAR | Central Bank of Ireland, Financial Measures Programme report (Mar 2011, PCAR capital requirements for AIB, BOI, EBS, IL&P): https://centralbank.ie/docs/default-source/publications/financial-measures-programme/the-financial-measures-programme-report.pdf ; Dail answer 20 Jul 2011 on State recapitalisation: https://www.oireachtas.ie/en/debates/question/2011-07-20/82/ |
+| Permanent TSB plc | Ireland | 2011 | State recapitalisation after 2011 PCAR | Central Bank of Ireland, Financial Measures Programme report (Mar 2011, PCAR capital requirements for AIB, BOI, EBS, IL&P): https://centralbank.ie/docs/default-source/publications/financial-measures-programme/the-financial-measures-programme-report.pdf ; Dail answer 20 Jul 2011 on State recapitalisation: https://www.oireachtas.ie/en/debates/question/2011-07-20/82/ |
+| Permanent TSB Group Holdings plc | Ireland | 2011 | State recapitalisation after 2011 PCAR | Central Bank of Ireland, Financial Measures Programme report (Mar 2011, PCAR capital requirements for AIB, BOI, EBS, IL&P): https://centralbank.ie/docs/default-source/publications/financial-measures-programme/the-financial-measures-programme-report.pdf ; Dail answer 20 Jul 2011 on State recapitalisation: https://www.oireachtas.ie/en/debates/question/2011-07-20/82/ |
 | Banca Popolare di Spoleto SpA | Italy | 2013 | Extraordinary administration (Feb 2013) | https://en.wikipedia.org/wiki/Banca_Popolare_di_Spoleto |
+| Banca Monte dei Paschi di Siena S.p.A. | Italy | 2013 | State aid (Monti bonds) | Commission decision of 27 Nov 2013, SA.36175 (MPS restructuring aid, New Financial Instruments of Feb 2013), cited in: https://ec.europa.eu/competition/state_aid/cases/270037/270037_1951496_149_2.pdf |
+| Banca Monte dei Paschi di Siena S.p.A. | Italy | 2017 | Precautionary recapitalisation | European Commission decision of 4 Jul 2017, SA.47677 (precautionary recapitalisation, EUR 5.4bn): https://ec.europa.eu/competition/state_aid/cases/270037/270037_1951496_149_2.pdf ; BMPS press release 5 Jul 2017: https://www.gruppomps.it/en/media-and-news/press-releases/bmps-european-commission-approves-the-2017-2021-restructuring-plan.html |
 | Veneto Banca S.p.A. | Italy | 2017 | Compulsory administrative liquidation (25 Jun 2017) | https://www.bancaditalia.it/media/notizia/piano-di-intervento-per-la-soluzione-della-crisi-della-banca-popolare-di-vicenza-e-di-veneto-banca |
 | Banca Nuova SpA | Italy | 2017 | Subsidiary of failed Banca Popolare di Vicenza; transferred to Intesa | https://group.intesasanpaolo.com/it/investor-relations/comunicati-stampa-price-sensitive/2017/06/CNT-05-00000004DDFA8 |
 | Banca Apulia SpA | Italy | 2017 | Subsidiary of failed Veneto Banca; transferred to Intesa | https://group.intesasanpaolo.com/it/investor-relations/comunicati-stampa-price-sensitive/2017/06/CNT-05-00000004DDFA8 |
@@ -108,36 +120,21 @@ Checks and corrections:
 | Idea Bank S.A. | Poland | 2020 | Resolution by BFG (31 Dec 2020) | https://bfg.pl/en/resolution-of-idea-bank-s-a/ |
 | Getin Noble Bank S.A. | Poland | 2022 | Resolution by BFG (30 Sep 2022) | https://bfg.pl/en/?p=15344 |
 | Caja de Ahorros de Galicia | Spain | 2011 | FROB recapitalisation and control of NCG Banco (Sep 2011) | https://agenceurope.eu/en/bulletin/article/10464/32/state-aid-allows-for-rescue-of-three-spanish-banks |
+| Bankia, S.A. | Spain | 2012 | Nationalisation and FROB recapitalisation | Banco de Espana press release 27 Nov 2012 (approval of BFA-Bankia restructuring plan): https://www.bde.es/f/webbde/SSICOM/20121127/presbe2012_52e.pdf ; FROB recapitalisation 26 Dec 2012: https://www.bde.es/f/webbde/GAP/prensa/info_interes/ficheros/frob261212en.pdf |
 | Liberbank, S.A. | Spain | 2012 | EC-approved restructuring with ESM/FROB capital (Group 2 bank; 20 Dec 2012) | https://cms.law/en/int/regulatory-news/ec-liberbank-caja3-banco-mare-nostrum-banco-ceiss |
 | Banco Grupo Cajatres SA | Spain | 2012 | EC-approved restructuring with ESM/FROB capital (Group 2 bank; 20 Dec 2012) | https://cms.law/en/int/regulatory-news/ec-liberbank-caja3-banco-mare-nostrum-banco-ceiss |
 | JSC Brokbusinessbank | Ukraine | 2014 | Declared insolvent by NBU (28 Feb 2014); licence revoked Jun 2014 | https://bank.gov.ua/en/news/all/natsionalniy-bank-priynyav-rishennya-pro-vidklikannya-bankivskoyi-litsenziyi-ta-likvidatsiyu-at-brokbiznesbank |
 | PJSC Delta Bank | Ukraine | 2015 | Declared insolvent by NBU (2 Mar 2015) | https://bank.gov.ua/en/news/all/at-delta-bank-vidneseno-do-kategoriyi-neplatospromojnih |
 | PJSC Kyivska Rus Bank | Ukraine | 2015 | Declared insolvent by NBU (19 Mar 2015) | https://bank.gov.ua/en/news/all/pat-bank-kiyivska-rus-vidneseno-do-kategoriyi-neplatospromojnih |
 | Commercial Bank Financial Initiative PJSC | Ukraine | 2015 | Declared insolvent by NBU (23 Jun 2015) | https://bank.gov.ua/news/all/pat-kb-finansova-initsiativa-vidneseno-do-kategoriyi-neplatospromojnih |
+| JSC CB PrivatBank | Ukraine | 2016 | Nationalisation | National Bank of Ukraine, 18 Dec 2016 (Cabinet decision on state participation): https://bank.gov.ua/en/news/all/derjava-uhvalila-rishennya-pro-vhodjennya-do-kapitalu-pat-privatbank |
 | Diamantbank PJSC | Ukraine | 2017 | Declared insolvent by NBU (24 Apr 2017) | https://bank.gov.ua/news/all/pat-diamantbank-vidneseno-do-kategoriyi-neplatospromojnih |
 | JSC VTB Bank (Ukraine) | Ukraine | 2018 | Declared insolvent by NBU (27 Nov 2018); liquidity crisis after court asset freeze | https://bank.gov.ua/en/news/all/at-vtb-bank-vidneseno-do-kategoriyi-neplatospromojnih |
 | MEGABANK JSC | Ukraine | 2022 | Declared insolvent by NBU (Jun 2022); problems predate the war | https://bank.gov.ua/en/news/all/at-megabank-vidneseno-do-kategoriyi-neplatospromojnih |
+| Marfin Laiki Bank UK | United Kingdom | 2013 | Parent Laiki resolved; UK branch closed and deposits transferred to Bank of Cyprus UK | Bank of England, 2 Apr 2013: https://www.bankofengland.co.uk/news/2013/april/closure-of-cyprus-popular-bank-public-co-ltd |
+| The Co-operative Bank p.l.c. | United Kingdom | 2013 | Capital shortfall and liability management exercise | Bank of England PRA statements 2013 (GBP 1.5bn capital shortfall): https://www.bankofengland.co.uk/news/2013/august/pra-statements-on-bank-capital-and-leverage-ratios-released-in-2013 ; FCA final notice 2015 (LME completed 20 Dec 2013): https://www.fca.org.uk/publication/final-notices/the-co-operative-bank-plc-2015.pdf |
 
-### Well-documented crisis events, not yet re-checked line by line (16)
-
-| Bank | Country | Year | Event |
-|---|---|---|---|
-| Dexia SA | Belgium | 2011 | Second state rescue and orderly resolution plan |
-| Bank of Cyprus Holdings | Cyprus | 2013 | Bail-in of uninsured depositors |
-| Dexia Crédit Local S.A. | France | 2011 | Part of Dexia group rescue |
-| Eurobank Ergasias | Greece | 2013 | HFSF recapitalisation |
-| National Bank of Greece S.A. | Greece | 2015 | Second recapitalisation after 2015 ECB assessment |
-| Piraeus Financial Holdings S.A. | Greece | 2015 | Second recapitalisation after 2015 ECB assessment |
-| Eurobank Ergasias | Greece | 2015 | Second recapitalisation after 2015 ECB assessment |
-| Allied Irish Banks, p.l.c. | Ireland | 2011 | State recapitalisation after 2011 PCAR |
-| Permanent TSB plc | Ireland | 2011 | State recapitalisation after 2011 PCAR |
-| Permanent TSB Group Holdings plc | Ireland | 2011 | State recapitalisation after 2011 PCAR |
-| Banca Monte dei Paschi di Siena S.p.A. | Italy | 2013 | State aid (Monti bonds) |
-| Banca Monte dei Paschi di Siena S.p.A. | Italy | 2017 | Precautionary recapitalisation |
-| Bankia, S.A. | Spain | 2012 | Nationalisation and FROB recapitalisation |
-| JSC CB PrivatBank | Ukraine | 2016 | Nationalisation |
-| Marfin Laiki Bank UK | United Kingdom | 2013 | Parent Laiki resolved; UK operations sold |
-| The Co-operative Bank p.l.c. | United Kingdom | 2013 | Capital shortfall and liability management exercise |
+All events in the file are verified against a primary or official source.
 
 ## E. Public data sources for the next download (METHODOLOGY.md section 12)
 

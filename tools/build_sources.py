@@ -18,5 +18,9 @@ out = (t.replace("{comp}", comp)
         .replace("{un}", "\n".join(f"| {r['BANK NAME']} | {r.COUNTRY} | {r.YEAR} | {r.EVENT} |"
                                    for _, r in u.iterrows()))
         .replace("{nv}", str(len(v))).replace("{nu}", str(len(u))))
+if len(u) == 0:
+    a = out.index("### Well-documented crisis events")
+    b = out.index("## E.")
+    out = out[:a] + "All events in the file are verified against a primary or official source.\n\n" + out[b:]
 (docs / "SOURCES.md").write_text(out)
 print(f"SOURCES.md: {len(v)} verified events, {len(u)} to re-check, {len(links)} sovereign pages")

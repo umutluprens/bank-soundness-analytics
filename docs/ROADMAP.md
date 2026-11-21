@@ -1,11 +1,11 @@
 # Roadmap
 
-## Phase 1: soundness scorecard (current, v0.6)
+## Phase 1: soundness scorecard (current, v0.8)
 
 A grade for the latest reported year, built from ratios, the operating environment, group
 support and a bounded overlay. See METHODOLOGY.md. Open items are listed at the end of FIXES.md.
 
-## Phase 2: next-year forecast with machine learning (proposal)
+## Phase 2: next-year forecast with machine learning
 
 **Question.** Given a bank's position at the end of year t and the expectations for year t+1
 that were known at that time, what grade is the bank likely to have at t+1, and how likely is
@@ -83,13 +83,44 @@ outcomes out of sample.
 - Survivorship: banks that failed leave the panel, so the forecast must be tested on the event
   file, not only on surviving banks.
 
+### First version (November 2026)
+
+`camels_score/forecast.py`, run with `run_forecast.py`. Bank and country-score information only;
+no macro expectations yet. Walk-forward on the 2010–2021 panel: each year from 2014 to 2021 is
+forecast from the year before, with models trained only on earlier years (5,235 forecasts).
+The score is the own score (country anchor and loss notch, before group support).
+
+| Route | Error in notches (MAE) | Exact grade | Within one notch |
+|---|---|---|---|
+| Persistence (next year = this year) | 0.77 | 50.5% | 83.2% |
+| Direct: gradient boosting on the score change | 0.74 | 52.2% | 84.3% |
+| Ratios: gradient boosting on each ratio change, scored by the frozen scorecard | 0.72 | 53.4% | 84.7% |
+
+- The ratio route beats persistence in all eight test years, by 7% on average and most in 2019
+  and 2021. It is the route proposed above, and its forecasts can be traced to ratios.
+- A first try on the score level, with mean-squared loss, did worse than persistence (MAE 0.80).
+  Forecasting the change with a median loss fixed that: the score is persistent and its yearly
+  changes are fat-tailed.
+- The 10–90% range from the direct route covers 79% of outcomes after conformal calibration
+  on the latest training year (75% before). Coverage still varies by year, from 68% (2014) to
+  89% (2016, 2019), and the range is wide: about 2.3 notches on average.
+- Downgrades are hard to call: the classifier ranks one-notch downgrades with AUC 0.64.
+- Events: the forecast score ranks events in the next two years about as well as today's score
+  (AUC 0.92–0.93 against 0.92), on 32 event bank-years. The forecast adds little to event
+  warning yet.
+- The yardstick (medians and cut-offs) is calibrated on 2010–2017, so the 2014–2017 targets are
+  measured on a scale that saw those years. The model itself never sees its target year.
+
+Next: add IMF WEO vintages (the `--macro` option is ready) and test
+whether macro expectations improve the downgrade signal, especially for 2020.
+
 ### Steps
 
 | Step | Output |
 |---|---|
 | 1 | Point-in-time feature table: bank-year at t joined with WEO vintage for t+1 |
-| 2 | Baselines and walk-forward framework (`camels_score/forecast.py`) |
-| 3 | Ratio forecasts with quantile gradient boosting, scored by the frozen scorecard |
+| 2 | Baselines and walk-forward framework (`camels_score/forecast.py`): done |
+| 3 | Ratio forecasts with gradient boosting, scored by the frozen scorecard: done, first version |
 | 4 | Downgrade probability and expected grade per bank in the output file |
 | 5 | Scenario runs with EBA adverse paths |
 | 6 | Validation report and methodology section for phase 2 |

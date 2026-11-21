@@ -6,6 +6,9 @@ Score a bank that is not in the panel from up to three years of its ratios.
   # with a parent: --parent-rating A --support strategic --assets-share 0.08
   # analyst overlay (notches, positive = weaker): --overlay 1
 
+  # from annual-report figures instead of ratios (the ratios are calculated):
+  python score_new_bank.py --raw templates/example_bank_raw_items.csv --calibration ../results/calibration.json --country-score 4
+
 Fill templates/new_bank_template.csv: one row per ratio, one column per year, values in %
 (debt / equity as a multiple). Leave a cell empty if the figure is not available; it is then
 filled with a weak value, as in the panel. ROAA volatility is calculated, not entered.
@@ -13,12 +16,14 @@ filled with a weak value, as in the panel. ROAA volatility is calculated, not en
 import argparse
 import json
 
-from camels_score.newbank import score_new_bank, read_template
+from camels_score.newbank import score_new_bank, read_template, read_raw_template, ratios_from_raw
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--input", required=True)
+    ap.add_argument("--input", help="ratios, one row per ratio (templates/new_bank_template.csv)")
+    ap.add_argument("--raw", help="annual-report figures, one row per item (templates/raw_items_template.csv); "
+                                  "the ratios are calculated")
     ap.add_argument("--calibration", required=True, help="calibration.json from run_pipeline.py")
     ap.add_argument("--name", default="New bank")
     ap.add_argument("--country-score", type=float, help="1 (strong) to 10 (weak) operating environment score")
@@ -32,7 +37,19 @@ def main():
     ap.add_argument("--json", help="also write the full result to this file")
     a = ap.parse_args()
 
-    res = score_new_bank(read_template(a.input), a.calibration, country_score=a.country_score,
+    if not a.input and not a.raw:
+        ap.error("give --input (ratios) or --raw (annual-report figures)")
+    if a.raw:
+        years, notes = ratios_from_raw(read_raw_template(a.raw))
+        last_y = max(years)
+        print(f"\nRatios calculated from the figures ({last_y}):")
+        for k, v in years[last_y].items():
+            print(f"  {k:<44} {v:8.2f}")
+        for n in notes:
+            print(f"  note: {n}")
+    else:
+        years = read_template(a.input)
+    res = score_new_bank(years, a.calibration, country_score=a.country_score,
                          sovereign_rating=a.sovereign, parent_rating=a.parent_rating,
                          parent_score=a.parent_score, support_level=a.support,
                          assets_share=a.assets_share, parent_stress=a.parent_stress,

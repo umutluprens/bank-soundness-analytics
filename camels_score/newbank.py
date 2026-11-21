@@ -223,3 +223,86 @@ def read_template(path):
     t["RATIO"] = t["RATIO"].str.strip().str.upper()
     return {int(y): {r: t.loc[i, y] for i, r in t["RATIO"].items()
                      if pd.notna(t.loc[i, y])} for y in year_cols}
+
+
+# ---- from annual-report figures to ratios --------------------------------------------------
+# Items to take from the balance sheet, income statement and Pillar 3 / capital note.
+# Any currency and unit, as long as all items of a bank use the same one.
+RAW_ITEMS = {
+    "TOTAL REGULATORY CAPITAL": "Own funds (Tier 1 + Tier 2), capital adequacy note",
+    "TIER 1 CAPITAL": "Tier 1 capital, capital adequacy note",
+    "RISK-WEIGHTED ASSETS": "Total risk-weighted assets (risk exposure amount)",
+    "TOTAL ASSETS": "Balance sheet total",
+    "TOTAL EQUITY": "Total equity including minority interests",
+    "INTANGIBLE ASSETS": "Goodwill and other intangibles (0 if none)",
+    "TOTAL DEBT": "Borrowings from banks, debt securities issued and subordinated debt (not customer deposits)",
+    "GROSS LOANS": "Gross loans to customers, before loss allowances",
+    "PROBLEM LOANS": "Non-performing / Stage 3 / impaired loans, gross",
+    "LOAN LOSS RESERVES": "Loss allowances on customer loans (stock, balance sheet)",
+    "TOTAL OPERATING INCOME": "Net interest income + net fees + trading and other income, before expenses and provisions",
+    "OPERATING EXPENSES": "Staff, administrative and depreciation expenses, without loan loss provisions",
+    "NET INTEREST INCOME": "Interest income minus interest expense",
+    "NET INCOME": "Profit for the year after tax",
+    "INTEREST-EARNING ASSETS": "Loans, interbank placements and debt securities (total assets if not available)",
+    "LIQUID ASSETS": "Cash, central bank balances, interbank placements and liquid securities",
+    "CUSTOMER DEPOSITS": "Deposits from customers",
+    "SHARES OUTSTANDING": "Number of shares at year end (optional; equity growth is used if empty)",
+}
+
+
+def ratios_from_raw(raw_years):
+    """raw_years: {year: {item: value}}. Returns ({year: {ratio: value}}, notes).
+
+    Averages (ROAA, ROAE, NIM) use the previous year's balance when that year is given, and the
+    year-end balance otherwise. A year given only to supply opening balances (no income
+    statement) is not scored."""
+    yrs = sorted(int(y) for y in raw_years)
+    g = lambda y, k: (lambda v: None if v is None or (isinstance(v, float) and math.isnan(v)) else float(v))(
+        raw_years.get(y, raw_years.get(str(y), {})).get(k))
+    div = lambda a, b, m=100.0: None if a is None or b is None or b == 0 else a / b * m
+    out, notes = {}, []
+    for y in yrs:
+        if g(y, "NET INCOME") is None and g(y, "TOTAL OPERATING INCOME") is None:
+            notes.append(f"{y}: no income statement, used for opening balances only")
+            continue
+        prev = y - 1 if (y - 1) in yrs else None
+        avg = lambda k: (None if g(y, k) is None else
+                         (g(y, k) + g(prev, k)) / 2 if prev and g(prev, k) is not None else g(y, k))
+        if prev is None:
+            notes.append(f"{y}: ROAA, ROAE and NIM on year-end balances (no {y - 1} figures)")
+        eq, intan = g(y, "TOTAL EQUITY"), g(y, "INTANGIBLE ASSETS") or 0.0
+        npl, llr = g(y, "PROBLEM LOANS"), g(y, "LOAN LOSS RESERVES")
+        dep, debt = g(y, "CUSTOMER DEPOSITS"), g(y, "TOTAL DEBT")
+        iea = "INTEREST-EARNING ASSETS" if g(y, "INTEREST-EARNING ASSETS") is not None else "TOTAL ASSETS"
+        oi = g(y, "TOTAL OPERATING INCOME")
+        bv = lambda yy: (None if yy is None or g(yy, "TOTAL EQUITY") is None else
+                         g(yy, "TOTAL EQUITY") / g(yy, "SHARES OUTSTANDING")
+                         if g(yy, "SHARES OUTSTANDING") else g(yy, "TOTAL EQUITY"))
+        r = {
+            "TOTAL CAPITAL RATIO": div(g(y, "TOTAL REGULATORY CAPITAL"), g(y, "RISK-WEIGHTED ASSETS")),
+            "TIER1 RATIO": div(g(y, "TIER 1 CAPITAL"), g(y, "RISK-WEIGHTED ASSETS")),
+            "TOTAL DEBT/ TOTAL EQUITY": div(debt, eq, 1.0),
+            "PROBLEM LOANS RATIO": div(npl, g(y, "GROSS LOANS")),
+            "TEXAS RATIO": div(npl, None if eq is None or llr is None else eq - intan + llr),
+            "LOAN LOSS RESERVE TO PROBLEM LOANS": div(llr, npl),
+            "COST TO INCOME RATIO": div(g(y, "OPERATING EXPENSES"), oi if oi and oi > 0 else None),
+            "OPERATING RETURN ON ASSETS": div(oi, g(y, "TOTAL ASSETS")),
+            "ROAA": div(g(y, "NET INCOME"), avg("TOTAL ASSETS")),
+            "ROAE": div(g(y, "NET INCOME"), avg("TOTAL EQUITY")),
+            "NET INTEREST MARGIN": div(g(y, "NET INTEREST INCOME"), avg(iea)),
+            "BOOKVALUE PER SHARE GROWTH": (None if bv(y) is None or bv(prev) in (None, 0)
+                                           else (bv(y) / bv(prev) - 1) * 100),
+            "LIQUID ASSETS/ TOTAL DEPOSITS & BORROWINGS": div(
+                g(y, "LIQUID ASSETS"), None if dep is None else dep + (debt or 0.0)),
+        }
+        out[y] = {k: v for k, v in r.items() if v is not None}
+    return out, notes
+
+
+def read_raw_template(path):
+    """CSV with an ITEM column and one column per year."""
+    t = pd.read_csv(path)
+    year_cols = [c for c in t.columns if str(c).strip().isdigit()]
+    t["ITEM"] = t["ITEM"].str.strip().str.upper()
+    return {int(y): {r: float(t.loc[i, y]) for i, r in t["ITEM"].items() if pd.notna(t.loc[i, y])}
+            for y in year_cols}

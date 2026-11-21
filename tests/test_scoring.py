@@ -220,3 +220,22 @@ def test_extra_ratios_are_merged(tmp_path):
     pd.DataFrame({"ID": [1], "YEAR": [2020], "CET1 RATIO": [14.0], "FOO": [1]}).to_csv(f, index=False)
     out = merge_extra_ratios(base, f)
     assert out.loc[0, "CET1 RATIO"] == 14.0 and "FOO" not in out
+
+
+def test_forecast_pairs_and_walk_forward_use_only_earlier_years():
+    from camels_score.synthetic import make_panel
+    from camels_score.data import prepare
+    from camels_score.scoring import CamelsScorer
+    from camels_score.forecast import build_pairs, walk_forward, evaluate
+    raw, _ = make_panel(n_banks=60)
+    df, ratios = prepare(raw)
+    sc = CamelsScorer().fit(df, ratios)
+    s = sc.transform(df)
+    p = build_pairs(s, ratios)
+    row = p.iloc[0]
+    nxt = s[(s.ID == row.ID) & (s.YEAR == row.YEAR + 1)]["OWN_SCORE"].iloc[0]
+    assert abs(row["NEXT_OWN_SCORE"] - nxt) < 1e-9
+    fc = walk_forward(s, ratios, sc, first_target=2016, last_target=2017, ratio_route=False)
+    assert set(fc["YEAR"] + 1) == {2016, 2017}
+    rep, _ = evaluate(fc)
+    assert rep["F_DIRECT"]["mae_score"] > 0
