@@ -15,7 +15,7 @@ and validation against real distress events rather than against the model's own 
 - **Six CAMELS pillars** from 14 ratios (36 in the registry, used once data is supplied), oriented
   robust z-scores, asset quality and earnings scored through the cycle.
 - **Country anchor.** A 1–10 operating environment score is blended in and caps how far a bank can
-  sit above its country.
+  sit above its country. An open version of the score is built from World Bank data (`camels_score/oe.py`).
 - **Group support.** A stronger parent closes part of the gap as a support probability of at most
   0.5, reduced for large subsidiaries, withdrawn when the parent is under stress, and never above
   the country cap or the sovereign rating.
@@ -84,6 +84,23 @@ python tool/build_tool.py --calibration results/calibration.json --out results/c
 For bank-years with full data the new-bank route gives the same grade as the pipeline in 99.3%
 of cases; the browser tool and the Python route give identical results (`tests/test_newbank.py`).
 
+## Ready-built grader
+
+[`dist/camels_new_bank_tool.html`](dist/camels_new_bank_tool.html) is the new bank grader as one
+page: download it and open it in a browser, it works offline. It holds the calibration of the
+2010–2021 panel as aggregate statistics only (medians, scales, cut-offs).
+
+## Open country score and public data
+
+```bash
+python tools/fetch_open_data.py --out data/open        # World Bank indicators, IMF WEO vintages
+python run_pipeline.py --input panel.csv --open-oe data/open/worldbank_indicators.csv --out results/
+```
+
+The open score has a rank correlation of 0.81 with S&P BICRA over 2010–2021 and ranks distress
+events as well (event AUC 0.90 overall, 0.93 for 2018–2021). `data/open/open_oe_scores.csv`
+holds the scores for the 18 countries.
+
 ## Forecast next year (phase 2, first version)
 
 ```bash
@@ -93,7 +110,7 @@ python run_forecast.py --input panel.csv --events data/events.csv --out results/
 Walk-forward on 2014–2021 (5,235 forecasts, each year forecast from the year before): forecasting
 the ratios and grading them with the frozen scorecard gives an error of 0.72 notches against 0.77
 for "next year equals this year", and is better in all eight years. Downgrades remain hard to
-call (AUC 0.64). Macro expectations are not in the model yet. See docs/ROADMAP.md.
+call (AUC 0.64). IMF WEO expectations were tested and did not help. See docs/ROADMAP.md.
 
 ## Repository structure
 
@@ -104,7 +121,9 @@ run_pipeline.py      calibrate, grade and validate a panel
 run_forecast.py      walk-forward forecast of next year's score
 score_new_bank.py    grade one bank from a template
 compare_legacy.py    2023 score against the new grade
-data/                events, parent mapping, sovereign ratings, overlays (each row with its source)
+data/                events, parent mapping, sovereign ratings, overlays (each row with its source);
+                     data/open: World Bank indicators, IMF WEO vintages, open country scores
+dist/                ready-built new bank grader
 templates/           new-bank template and a fictitious example
 tool/                browser tool (template, scoring engine, build script)
 tools/               rebuilds docs/SOURCES.md from the input files
@@ -138,6 +157,7 @@ python run_analysis.py --demo --output results
 - Few distress events, especially after 2017 (10 event bank-years in 2018–2021).
 - Parent support levels are assumed from brand names and await confirmation.
 - No market-risk sensitivity ratios yet; liquidity rests on one ratio.
+- The open country score is relative to the 18 countries of the panel, not a global scale.
 - The grade ranks relative soundness. It is not a probability of default or a credit rating, and
   it supports analyst judgement rather than replacing it.
 

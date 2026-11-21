@@ -1,6 +1,6 @@
 # CAMELS Bank Soundness Scorecard: Methodology
 
-Version 0.8 (November 2026). Author: Umut Yasar.
+Version 0.9 (November 2026). Author: Umut Yasar.
 Status: working methodology, calibrated and back-tested on the 2023 UCD Capital IQ panel.
 Not reviewed by a model validation function.
 
@@ -276,20 +276,36 @@ on the review list.
 
 ## 9. Operating environment score
 
-The back-test uses S&P BICRA groups. BICRA is proprietary, so a product version needs its own
-country score on the same 1 to 10 scale. Proposed design, not yet built:
+The first back-tests used S&P BICRA groups. BICRA is proprietary, so the scorecard now has its
+own country score on the same 1 to 10 scale, built from public data (`camels_score/oe.py`,
+`--open-oe`). A run on it needs no restricted country input.
 
-| Component | Weight | Open source |
-|---|---|---|
-| Economic resilience: GDP per capita, growth volatility, inflation | 30% | IMF World Economic Outlook |
-| Credit and asset risk: private credit / GDP gap, house price growth, sector NPL ratio | 30% | BIS credit statistics, IMF Financial Soundness Indicators |
-| Banking system funding and profitability: sector loans / deposits, sector ROA | 20% | IMF Financial Soundness Indicators |
-| Institutional framework: rule of law, regulatory quality | 20% | World Bank Worldwide Governance Indicators |
+| Component | Weight | Indicators | Source |
+|---|---|---|---|
+| Economic resilience | 30% | GDP per capita (PPP), volatility of growth over 5 years, inflation away from 2% | World Bank WDI |
+| Credit and asset risk | 30% | Private credit / GDP against its 5-year average, banking sector NPL ratio | World Bank WDI, Global Financial Development |
+| Funding and profitability | 20% | Sector credit / deposits, sector return on assets | Global Financial Development |
+| Institutions | 20% | Rule of law, regulatory quality | Worldwide Governance Indicators |
 
-Each component is turned into a percentile across countries and years, and the weighted total
-is mapped to 1 to 10. Before replacing BICRA, the open score should rank countries in a
-similar order (a Spearman rank correlation above 0.8 with BICRA over 2010–2021). It should also
-not weaken the event AUC.
+Each indicator is turned into an oriented robust z-score against the country-years of
+2010–2017, the components are averaged with these weights, and a trailing 3-year average of the
+composite is mapped to 1 to 10 through the 2010–2017 decile cut-offs. This is the same
+construction as the bank scorecard. The data are downloaded by `tools/fetch_open_data.py`
+and stored in `data/open/`.
+
+Two tests were set before building it, and both are met:
+
+| Test | Result |
+|---|---|
+| Rank correlation with BICRA above 0.8, 2010–2021 | 0.81 (0.77 without the 3-year average, 0.85 with 5 years) |
+| Event ranking not weaker than with BICRA | Event AUC 0.90 all years and 0.93 for 2018–2021, against 0.90 and 0.92 |
+
+Limits. The score is relative to the 18 countries of the panel, not a global scale: the best of
+them receive 1, which is more generous than BICRA (Hungary and Spain score 1 in 2019, BICRA 6
+and 4). It agrees with BICRA within one notch for 63% of country-years and within two for 87%.
+It moves faster than BICRA in recoveries and in 2020. House prices and sector funding from
+abroad are not in it yet. The grade figures in Sections 2, 8 and 10 come from the BICRA-based
+run; the open-score run is in `results/open_oe/` and differs little.
 
 The anchor weight is a judgement call. In the back-test a weight of 0 (cap only) gave the
 best event ranking. With only 10 events after 2017 that is weak evidence, so the weight is
@@ -466,3 +482,4 @@ of a random test set (`tests/test_newbank.py` repeats this check).
 | 0.6 | Agency comparison applied: through-the-cycle ratios, sovereign cap on support, ability factor, parent stress years, weak-parent flag, bounded qualitative overlay, loader for extra ratios, sources appendix |
 | 0.7 | Pillar weights C 20%, A 30%, M 5%, E 25%, L 15%, S 5%; S&P-style grade descriptors; new-bank scoring (command line and browser tool) |
 | 0.8 | All 48 events verified against official sources; phase 2 forecast, first version (ROADMAP.md) |
+| 0.9 | Open operating-environment score from World Bank data; new-bank grading from annual-report figures; macro expectations tested in the forecast |

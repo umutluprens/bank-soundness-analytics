@@ -239,3 +239,25 @@ def test_forecast_pairs_and_walk_forward_use_only_earlier_years():
     assert set(fc["YEAR"] + 1) == {2016, 2017}
     rep, _ = evaluate(fc)
     assert rep["F_DIRECT"]["mae_score"] > 0
+
+
+def test_open_oe_orders_countries_and_macro_table_is_point_in_time(tmp_path):
+    from camels_score.oe import OpenOE, indicators
+    from camels_score.forecast import load_macro
+    rows = []
+    for c, lvl in (("Strong", 1.0), ("Middle", 0.0), ("Weak", -1.0)):
+        for y in range(2005, 2022):
+            vals = {"GDP_PER_CAPITA_PPP": 30000 * (1 + lvl / 2), "GDP_GROWTH": 2 + (y % 3) * (1 - lvl),
+                    "INFLATION": 2 + 4 * (1 - lvl), "PRIVATE_CREDIT_GDP": 80 + y % 5, "SECTOR_NPL_RATIO": 5 - 4 * lvl,
+                    "SECTOR_CREDIT_DEPOSITS": 100 - 20 * lvl, "SECTOR_ROA": 0.5 + lvl, "RULE_OF_LAW": lvl,
+                    "REGULATORY_QUALITY": lvl}
+            rows += [{"COUNTRY": c, "YEAR": y, "NAME": k, "VALUE": v} for k, v in vals.items()]
+    ind = indicators(pd.DataFrame(rows))
+    oe = OpenOE().fit(ind).transform(ind)
+    last = oe[oe.YEAR == 2020].set_index("COUNTRY")["OE_SCORE_OPEN"]
+    assert last["Strong"] < last["Middle"] < last["Weak"]
+    f = tmp_path / "weo.csv"
+    pd.DataFrame({"COUNTRY": ["A", "A"], "ISO3": ["A", "A"], "VINTAGE_YEAR": [2015, 2015], "TARGET_YEAR": [2015, 2016],
+                  "NAME": ["GDP_GROWTH_FORECAST"] * 2, "VALUE": [1.0, 2.5]}).to_csv(f, index=False)
+    m = load_macro(f)
+    assert m.loc[0, "YEAR"] == 2015 and m.loc[0, "GDP_GROWTH_NEXT"] == 2.5 and m.loc[0, "GDP_GROWTH_CHANGE"] == 1.5

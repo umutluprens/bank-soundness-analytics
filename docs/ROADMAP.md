@@ -68,7 +68,7 @@ outcomes out of sample.
 
 ### Data needed
 
-1. IMF WEO historical vintages (public, October of each year 2009–2021) for the 18 countries.
+1. IMF WEO historical vintages for the 18 countries: done (`data/open/weo_vintages.csv`).
 2. EBA stress test scenario files (public).
 3. The extended ratio download already listed in METHODOLOGY.md section 12. Cost of risk, CET1
    and loans/deposits are the most useful forecast targets after problem loans and ROAA.
@@ -111,8 +111,26 @@ The score is the own score (country anchor and loss notch, before group support)
 - The yardstick (medians and cut-offs) is calibrated on 2010–2017, so the 2014–2017 targets are
   measured on a scale that saw those years. The model itself never sees its target year.
 
-Next: add IMF WEO vintages (the `--macro` option is ready) and test
-whether macro expectations improve the downgrade signal, especially for 2020.
+### Macro expectations (tested, not adopted)
+
+IMF WEO October vintages for 2010–2021 were added through DBnomics (`data/open/weo_vintages.csv`,
+`--macro`): for each country and year t, the growth, inflation and unemployment forecasts for t
+and t+1 as published in October of year t. April 2011 stands in for October 2011, which is not
+on DBnomics.
+
+| Route | Without macro | With macro |
+|---|---|---|
+| Ratios, error in notches | 0.72 | 0.73 |
+| Direct, error in notches | 0.74 | 0.75 |
+| Downgrade classifier AUC | 0.64 | 0.63 |
+
+The forecasts did not improve on bank-level information, including for 2020. With 18 countries
+and 12 years the macro variables take few distinct values, and the country score already
+carries most of the country signal. The option stays in the code; the default run does not use
+it.
+
+Next: bank-level drivers with more signal (cost of risk, Stage 2 loans, CET1 from the EBA files),
+and a longer test period.
 
 ### Steps
 
