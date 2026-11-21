@@ -1,4 +1,4 @@
-# Fix log: 2023 UCD CAMELS project → camels-score v0.9
+# Fix log: 2023 UCD CAMELS project → camels-score v0.10
 
 Sources reviewed: FDS Final Report (Executive Style), 21 April 2023, with its code appendix, and
 the original 2023 data folder (CAMELS_2010–2021.xlsx, Data_Management_2.xlsx, BICRA.xlsx,
