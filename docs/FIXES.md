@@ -1,4 +1,4 @@
-# Fix log: 2023 UCD CAMELS project → camels-score v0.9
+# Fix log: 2023 UCD CAMELS project → camels-score v0.10
 
 Sources reviewed: FDS Final Report (Executive Style), 21 April 2023, with its code appendix, and
 the original 2023 data folder (CAMELS_2010–2021.xlsx, Data_Management_2.xlsx, BICRA.xlsx,
@@ -200,9 +200,19 @@ Effect of the new weights: event AUC 0.90 all years (0.91), 0.92 after 2017 (unc
 | 57 | Macro expectations tested in the forecast (`--macro`): no improvement (error 0.73 against 0.72 notches), so not used by default. |
 | 58 | EBA Transparency Exercise files 2019–2025 (`tr_oth.csv`, metadata) downloaded to `external_data/eba/` for the next step: CET1, leverage, NPE and P&L items for about 120 EU banks. Not yet mapped to the panel. 34 tests. |
 
+## Added in v0.10
+
+| # | Change |
+|---|---|
+| 59 | EBA banks matched to the panel (`data/eba_bank_map.csv`): 75 of 164, each row checked by hand. Automatic name matching had linked Bank of Ireland to KBC Bank Ireland and UniCredit to a former subsidiary. |
+| 60 | `camels_score/eba.py` builds 22 registry ratios from the EBA files for 2018–2024 (`data/eba_ratio_map.csv`). Two reading errors fixed on the way: thousands separators in the 2019 file, and meaningless loan ratios for banks with almost no loans. |
+| 61 | EBA against Capital IQ on 233 common bank-years: capital and earnings ratios near identical, asset quality rank correlation 0.84 to 0.91. Grades with EBA ratios: 96% within one notch (98% for 2019–2021). |
+| 62 | `--eba-folder` extends the panel to 2022–2024 (161 bank-years, 56 banks). Liquid asset ratio carried from the bank's last report, book value growth neutral, country score and sovereign rating held at 2021. |
+| 63 | Forecast: three more test years (error 0.36 notches for the ratio route against 0.54 for persistence) and `outlook_next_year.csv` with the 2025 forecast for 54 banks. Forecast range now always contains the point forecast. 37 tests. |
+
 ## Still open
 
-1. Map the downloaded EBA files to the panel (bank names to IDs, item codes to ratios) to add CET1, leverage ratio, cost of risk and Stage 2, and to extend the panel to 2022–2025. Only 14 of the 36 registry ratios are scored today.
+1. EBA follow-up: download the 2015–2018 exercises (item codes differ), add the credit risk file for forborne and non-performing exposures, find a public source for LCR and NSFR (Pillar 3 data hub), and update the country score and sovereign ratings beyond 2021. Only 14 of the 36 registry ratios are scored today.
 2. Open country score: put it on a wider country sample so the scale is not relative to 18 countries; add house prices.
 3. Decide on the remaining proposals in METHODOLOGY.md section 11 (cap-only country anchor, absolute bands).
 4. Confirm ownership and support levels in data/parents.csv and enter PARENT_GRADE for the 22 parents outside the panel (VTB, Sberbank, Raiffeisen, Erste, Deutsche Bank, Citi, Banca Popolare di Vicenza and others). Check the Danske Bank Hamburg branch record (assets 68% of the parent's).

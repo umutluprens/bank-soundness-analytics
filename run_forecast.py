@@ -24,6 +24,8 @@ def main():
     ap.add_argument("--input"); ap.add_argument("--capiq-folder"); ap.add_argument("--synthetic", action="store_true")
     ap.add_argument("--events"); ap.add_argument("--macro", help="WEO vintage file from tools/fetch_open_data.py")
     ap.add_argument("--open-oe", help="World Bank indicator file: use the open country score")
+    ap.add_argument("--eba-folder", help="EBA transparency files: extend the panel beyond its last year")
+    ap.add_argument("--eba-map", default="data/eba_bank_map.csv")
     ap.add_argument("--calib-end", type=int, default=2017)
     ap.add_argument("--first-target", type=int, default=2014)
     ap.add_argument("--no-ratio-route", action="store_true")
@@ -45,12 +47,16 @@ def main():
     from camels_score.forecast import load_macro
     macro = load_macro(a.macro) if a.macro else None
 
+    if a.eba_folder:
+        from camels_score.eba import extend_panel
+        raw = extend_panel(raw, a.eba_folder, a.eba_map, a.calib_end)
     if a.open_oe:
         from camels_score.oe import build_open_oe
         oe, _ = build_open_oe(a.open_oe, a.calib_end)
         raw.columns = [str(c).strip().upper() for c in raw.columns]
         raw = raw.drop(columns=[c for c in ("OE_SCORE",) if c in raw.columns]).merge(
             oe[["COUNTRY", "YEAR", "OE_SCORE"]], on=["COUNTRY", "YEAR"], how="left")
+        raw["OE_SCORE"] = raw.sort_values("YEAR").groupby("COUNTRY")["OE_SCORE"].ffill().reindex(raw.index)
     df, ratios, unimputed, basis = prepare(raw, return_reference=True)
     scorer = CamelsScorer().fit(df[df["YEAR"] <= a.calib_end], ratios,
                                  reference=basis[basis["YEAR"] <= a.calib_end])
@@ -70,6 +76,18 @@ def main():
     cols = ["ID", "YEAR", "COUNTRY", "OWN_SCORE", "NEXT_OWN_SCORE", "F_PERSIST", "F_DIRECT", "F_DIRECT_P10",
             "F_DIRECT_P90", "F_RATIOS", "P_DOWNGRADE", "DOWNGRADE", "EVENT_NEXT"]
     fc[[c for c in cols if c in fc]].round(3).to_csv(out / "forecast_by_bank_year.csv", index=False)
+    from camels_score.forecast import outlook
+    ol = outlook(scored, ratios, scorer, macro)
+    if not ol.empty and "F_DIRECT" in ol:
+        names = scored.drop_duplicates("ID").set_index("ID")["BANK NAME"] if "BANK NAME" in scored else None
+        if names is not None:
+            ol.insert(1, "BANK NAME", ol["ID"].map(names))
+        oc = ["ID", "BANK NAME", "COUNTRY", "YEAR", "TARGET_YEAR", "OWN_SCORE", "F_DIRECT", "F_DIRECT_P10",
+              "F_DIRECT_P90", "F_RATIOS", "P_DOWNGRADE"]
+        ol[[c for c in oc if c in ol]].round(3).sort_values("F_DIRECT").to_csv(out / "outlook_next_year.csv", index=False)
+        rep["outlook"] = {"target_year": int(ol["TARGET_YEAR"].iloc[0]), "banks": int(len(ol)),
+                          "mean_score_now": round(float(ol["OWN_SCORE"].mean()), 2),
+                          "mean_forecast": round(float(ol["F_DIRECT"].mean()), 2)}
     (out / "forecast_report.json").write_text(json.dumps(rep, indent=2))
     print(json.dumps(rep, indent=2))
 

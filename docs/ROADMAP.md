@@ -129,8 +129,18 @@ and 12 years the macro variables take few distinct values, and the country score
 carries most of the country signal. The option stays in the code; the default run does not use
 it.
 
-Next: bank-level drivers with more signal (cost of risk, Stage 2 loans, CET1 from the EBA files),
-and a longer test period.
+### EBA extension (v0.10)
+
+The panel now runs to 2024 for 56 EU banks (METHODOLOGY.md section 15). Three more target years:
+
+| Target years | Forecasts | Persistence | Direct | Ratio route | 80% range coverage |
+|---|---|---|---|---|---|
+| 2022–2024 | 159 | 0.54 | 0.46 | 0.36 | 80% |
+
+`outlook_next_year.csv` holds the 2025 forecast for the 54 banks with 2024 data.
+
+Next: use the EBA-only drivers (cost of risk, Stage 2 loans, CET1) as forecast features; they
+exist from 2018, so the test window for them is short.
 
 ### Steps
 

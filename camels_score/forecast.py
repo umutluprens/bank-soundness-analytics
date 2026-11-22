@@ -34,8 +34,9 @@ def _grade(s):
     return np.clip(np.round(np.asarray(s, dtype=float)), 1, 10)
 
 
-def build_pairs(scored, ratios, macro=None):
-    """One row per bank and year t with features at t and outcomes at t+1."""
+def build_pairs(scored, ratios, macro=None, keep_open=False):
+    """One row per bank and year t with features at t and outcomes at t+1.
+    keep_open=True also keeps rows whose outcome is not known yet (for the outlook)."""
     d = scored.sort_values(["ID", "YEAR"]).copy()
     pz = [c for c in d.columns if c.startswith("PILLAR_") and c.endswith("_Z")]
     base = ratios + pz + ["COMPOSITE_Z", SCORE, "OE_SCORE_USED", "MISSING_COUNT"]
@@ -49,7 +50,7 @@ def build_pairs(scored, ratios, macro=None):
     nxt = d[["ID", "YEAR", SCORE] + [r for r in ratios if r in d.columns]].copy()
     nxt["YEAR"] = nxt["YEAR"] - 1
     nxt = nxt.rename(columns={c: f"NEXT_{c}" for c in nxt.columns if c not in ("ID", "YEAR")})
-    pairs = feat.merge(nxt, on=["ID", "YEAR"], how="inner")
+    pairs = feat.merge(nxt, on=["ID", "YEAR"], how="left" if keep_open else "inner")
     if macro is not None:
         pairs = pairs.merge(macro, on=["COUNTRY", "YEAR"], how="left")
     pairs["DOWNGRADE"] = (_grade(pairs[f"NEXT_{SCORE}"]) - _grade(pairs[SCORE]) >= 1).astype(int)
@@ -90,6 +91,8 @@ def walk_forward(scored, ratios, scorer, first_target=2014, last_target=None, ma
         te["RANGE_MARGIN"] = widen
         te["F_DIRECT_P10"] = np.clip(now + _hgb(q=0.1).fit(tr[X], y).predict(te[X]) - widen, 1, 10)
         te["F_DIRECT_P90"] = np.clip(now + _hgb(q=0.9).fit(tr[X], y).predict(te[X]) + widen, 1, 10)
+        te["F_DIRECT_P10"] = np.minimum(te["F_DIRECT_P10"], te["F_DIRECT"])   # range always holds the forecast
+        te["F_DIRECT_P90"] = np.maximum(te["F_DIRECT_P90"], te["F_DIRECT"])
         clf = HistGradientBoostingClassifier(max_iter=200, learning_rate=0.05, max_depth=3,
                                              min_samples_leaf=40, random_state=0)
         te["P_DOWNGRADE"] = clf.fit(tr[X], tr["DOWNGRADE"]).predict_proba(te[X])[:, 1] \
@@ -98,6 +101,32 @@ def walk_forward(scored, ratios, scorer, first_target=2014, last_target=None, ma
             te["F_RATIOS"] = _ratio_route(tr, te, X, ratios, scored, scorer)
         out.append(te)
     return pd.concat(out, ignore_index=True)
+
+
+def outlook(scored, ratios, scorer, macro=None):
+    """Forecast for the year after the last year in the panel, for banks with data in that year.
+    Trained on every pair with a known outcome. Not a back-test: there is nothing to compare with yet."""
+    allp = build_pairs(scored, ratios, macro, keep_open=True)
+    X = _features(allp)
+    tr = allp[allp[f"NEXT_{SCORE}"].notna()]
+    last = int(allp["YEAR"].max())
+    te = allp[(allp["YEAR"] == last) & allp[f"NEXT_{SCORE}"].isna()].copy()
+    if te.empty or len(tr) < 200:
+        return te
+    y = tr[f"NEXT_{SCORE}"] - tr[SCORE]
+    now = te[SCORE].to_numpy()
+    widen = _conformal_margin(tr, X, last + 1)
+    te["TARGET_YEAR"] = last + 1
+    te["F_DIRECT"] = np.clip(now + _hgb().fit(tr[X], y).predict(te[X]), 1, 10)
+    te["F_DIRECT_P10"] = np.clip(now + _hgb(q=0.1).fit(tr[X], y).predict(te[X]) - widen, 1, 10)
+    te["F_DIRECT_P90"] = np.clip(now + _hgb(q=0.9).fit(tr[X], y).predict(te[X]) + widen, 1, 10)
+    te["F_DIRECT_P10"] = np.minimum(te["F_DIRECT_P10"], te["F_DIRECT"])
+    te["F_DIRECT_P90"] = np.maximum(te["F_DIRECT_P90"], te["F_DIRECT"])
+    clf = HistGradientBoostingClassifier(max_iter=200, learning_rate=0.05, max_depth=3,
+                                         min_samples_leaf=40, random_state=0)
+    te["P_DOWNGRADE"] = clf.fit(tr[X], tr["DOWNGRADE"]).predict_proba(te[X])[:, 1]
+    te["F_RATIOS"] = _ratio_route(tr, te, X, ratios, scored, scorer)
+    return te
 
 
 def _conformal_margin(tr, X, target, coverage=0.8):

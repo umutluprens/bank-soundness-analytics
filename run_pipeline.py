@@ -50,6 +50,9 @@ def main():
                     help="score latest values only (no 3-year weaker-of rule)")
     ap.add_argument("--open-oe", help="World Bank indicator file (tools/fetch_open_data.py): use the open "
                                       "operating-environment score in place of BICRA / OE_SCORE")
+    ap.add_argument("--eba-folder", help="folder with EBA transparency files (<exercise>/tr_oth*.csv): "
+                                         "adds matched banks for the years after the panel ends")
+    ap.add_argument("--eba-map", default="data/eba_bank_map.csv", help="LEI to panel ID table")
     ap.add_argument("--synthetic", action="store_true")
     ap.add_argument("--calib-end", type=int, default=2017,
                     help="last year of the calibration sample; later years are out-of-time")
@@ -72,6 +75,13 @@ def main():
 
     if a.extra_ratios:
         raw = merge_extra_ratios(raw, a.extra_ratios)
+    if a.eba_folder:
+        from camels_score.eba import extend_panel
+        n0 = len(raw)
+        raw = extend_panel(raw, a.eba_folder, a.eba_map, a.calib_end)
+        added = raw[raw["DATA_SOURCE"] == "EBA"]
+        print(f"EBA extension: {len(raw) - n0} bank-years added "
+              f"({added['ID'].nunique()} banks, {int(added['YEAR'].min())}-{int(added['YEAR'].max())})")
     oe_table = None
     if a.open_oe:
         from camels_score.oe import build_open_oe
@@ -79,6 +89,8 @@ def main():
         raw.columns = [str(c).strip().upper() for c in raw.columns]
         raw = raw.drop(columns=[c for c in ("OE_SCORE",) if c in raw.columns]).merge(
             oe_table[["COUNTRY", "YEAR", "OE_SCORE"]], on=["COUNTRY", "YEAR"], how="left")
+        # years after the last country score keep the last one
+        raw["OE_SCORE"] = raw.sort_values("YEAR").groupby("COUNTRY")["OE_SCORE"].ffill().reindex(raw.index)
         print(f"open operating-environment score attached for {raw['OE_SCORE'].notna().mean():.0%} of bank-years")
     df, ratios, unimputed, basis = prepare(raw, multi_year=not a.no_multi_year,
                                            return_reference=True)
@@ -89,6 +101,8 @@ def main():
     if a.sovereign:
         sov = load_sovereign(a.sovereign)
         df = df.merge(sov, on=["COUNTRY", "YEAR"], how="left").set_axis(df.index)
+        # years after the last rating in the file keep the last one
+        df["SOVEREIGN_GRADE"] = df.sort_values("YEAR").groupby("COUNTRY")["SOVEREIGN_GRADE"].ffill().reindex(df.index)
         print(f"sovereign grade available for {df['SOVEREIGN_GRADE'].notna().mean():.0%} of bank-years")
     scorer = CamelsScorer().fit(df[df["YEAR"] <= a.calib_end], ratios,
                                  reference=basis[basis["YEAR"] <= a.calib_end])
@@ -140,7 +154,8 @@ def main():
                        "ASSETS_SHARE_OF_PARENT", "SUPPORT_ABILITY", "PARENT_STRESS", "WEAK_PARENT",
                        "SOVEREIGN_GRADE", "SUPPORT_PROB", "GROUP_ADJ", "SCORE_BEFORE_OVERLAY",
                        "OVERLAY_NOTCHES", "FINAL_SCORE", "FINAL_GRADE", "GRADE_LABEL", "GRADE_DESCRIPTOR",
-                       "DATA_QUALITY_FLAG", "MISSING_COUNT", "PROFILE", "EVENT_NEXT_2Y",
+                       "DATA_QUALITY_FLAG", "MISSING_COUNT", "DATA_SOURCE", "CARRIED_RATIOS",
+                       "PROFILE", "EVENT_NEXT_2Y",
                        "PROXY_NEXT_1Y")]
         scored[keep + grade_cols].to_excel(xw, sheet_name="scores", index=False)
         for name, t in tables.items():

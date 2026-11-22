@@ -1,0 +1,165 @@
+LEI,EBA_NAME,EBA_COUNTRY,EBA_EXERCISES,ID,PANEL_NAME,PANEL_DATA_YEARS,MATCH,NOTE
+529900IZ8TASAYR3A694,Sberbank Europe AG,AT,4,,,,none,country not in panel
+529900S9YO2JHTIIDG38,BAWAG Group AG,AT,8,,,,none,country not in panel
+529900XSTAE561178282,Raiffeisenbankengruppe OÖ Verbund eGen,AT,8,,,,none,country not in panel
+9ZHRYM6F437SQJ6OUG95,Raiffeisen Bank International AG,AT,8,,,,none,country not in panel
+AT0000000000043000VB,Volksbanken Verbund,AT,8,,,,none,country not in panel
+PQOH26KWDF7CG10L6792,Erste Group Bank AG,AT,7,,,,none,country not in panel
+213800X3Q9LSAKRUWY91,KBC Group,BE,8,4145062.0,KBC Group NV (ENXTBR:KBC),2010-2021,name,
+5493008QOCP58OLEN998,Investeringsmaatschappij Argenta,BE,8,4242091.0,Argenta Bank- en Verzekeringsgroep nv,2010-2021,manual,Argenta Bank- en Verzekeringsgroep
+A5GWLFH3KM7YV2SFQL84,Belfius Banque,BE,8,4235104.0,Belfius Bank SA,2010-2021,name,
+D3K6HXMBBB6SK9OXH394,Dexia,BE,3,4024522.0,Dexia SA,2010-2021,name,
+LSGM84136ACA92XCN876,AXA Bank Belgium,BE,4,4242094.0,AXA Bank Belgium N.V.,2010-2021,manual,
+MMYX0N4ZEZ13Z4XCG897,The Bank of New York Mellon SA,BE,8,,,,none,no counterpart in panel
+549300UY81ESCZJ0GR95,First Investment Bank,BG,4,,,,none,country not in panel
+253400EBCBBVB9TUHN50,RCB Bank Ltd,CY,4,4263452.0,RCB Bank Ltd,2014-2020,name,
+635400L14KNHZXPUZM19,Bank of Cyprus Holdings Public Limited Company,CY,8,4893578.0,Bank of Cyprus Holdings Public Limited Company (CSE:BOCH),2010-2021,name,
+CXUHEGU3MADZ2CEV7C11,Hellenic Bank Public Company Ltd,CY,6,4155888.0,Hellenic Bank Public Company Limited (CSE:HB),2010-2021,name,
+3M5E1GQGKL17HI6CPN30,Jyske Bank A/S,DK,8,4145097.0,Jyske Bank A/S (CPSE:JYSK),2010-2021,name,
+GP5DT10VX1QRQUKVBK64,Sydbank A/S,DK,4,4145111.0,Sydbank A/S (CPSE:SYDB),2010-2021,name,
+LIU16F6VZJSD6UKHD557,Nykredit Realkredit A/S,DK,8,,,,none,panel has only the subsidiary Nykredit Bank
+MAES062Z21O4RZ2U7M96,Danske Bank A/S,DK,8,4080954.0,Danske Bank A/S (CPSE:DANSKE),2010-2021,name,
+529900JG015JC10LED24,AS LHV Group,EE,7,,,,none,country not in panel
+529900HEKOENJHPNN480,Kuntarahoitus Oyj,FI,8,,,,none,no counterpart in panel
+529900ODI3047E2LIV03,Nordea Bank Abp,FI,8,4108919.0,Nordea Bank Abp (OM:NDA SE),2010-2021,name,
+7437003B5WFBOIEFY714,OP Osuuskunta,FI,8,,,,none,panel has only the subsidiary OP Yrityspankki
+7437005892K69S3MW344,Säästöpankkiliitto osk,FI,3,,,,none,no counterpart in panel
+549300HFEHJOXGE4ZE63,SFIL,FR,8,,,,none,no counterpart in panel
+96950001WI712W7PQG45,RCI Banque,FR,8,,,,none,no counterpart in panel
+9695000CG7B84NLR5984,Confédération Nationale du Crédit Mutuel,FR,8,4155894.0,Confédération Nationale du Crédit Mutuel,2014-2021,name,
+96950066U5XAAIRCPA78,La Banque Postale,FR,8,4242218.0,La Banque Postale S.A.,2010-2021,manual,
+969500FYSB4IT3QWYB65,Bpifrance S.A. (Banque Publique d’Investissement),FR,2,,,,none,no counterpart in panel
+969500TVVZM86W7W5I94,C.R.H. - Caisse de refinancement de l'habitat,FR,4,,,,none,no counterpart in panel
+FR9695005MSX1OYEMGDF,Groupe BPCE,FR,8,4239955.0,Groupe BPCE,2010-2021,name,
+FR969500TJ5KRTCJQWXH,Groupe Crédit Agricole,FR,8,4242161.0,Crédit Agricole Group,2010-2021,name,
+O2RNE8IBXP4R0TD8PU41,Société générale,FR,8,113818.0,Société Générale Société anonyme (ENXTPA:GLE),2010-2021,manual,
+R0MUWSFPU8MPRO8K5P83,BNP Paribas,FR,8,3001689.0,BNP Paribas SA (ENXTPA:BNP),2010-2021,name,
+R1IO4YJ0O79SMWVCHB58,Banque centrale de compensation,FR,3,,,,none,no counterpart in panel
+0W2PZJM8XOY22M4GG883,DekaBank Deutsche Girozentrale,DE,8,,,,none,no counterpart in panel
+391200EEGLNXBBCVKC73,Erwerbsgesellschaft der S-Finanzgruppe mbH & Co. KG,DE,8,,,,none,no counterpart in panel
+5299007S3UH5RKUYDA52,Deutsche Apotheker- und Ärztebank EG,DE,8,,,,none,no counterpart in panel
+529900GJD3OQLRZCKW37,Volkswagen Bank Gesellschaft mit beschränkter Haftung,DE,6,4145075.0,Volkswagen Bank GmbH,2010-2021,manual,
+529900GM944JT8YIRL63,Münchener Hypothekenbank EG,DE,8,,,,none,no counterpart in panel
+529900HNOAA1KXQJUQ27,"DZ BANK AG Deutsche Zentral-Genossenschaftsbank, Frankfurt am Main",DE,8,4142663.0,"DZ BANK AG Deutsche Zentral-Genossenschaftsbank, Frankfurt am Main",2010-2021,name,
+529900JZTYE3W7WQH904,HASPA Finanzholding,DE,8,,,,none,no counterpart in panel
+TUKDD90GPC79G1KOE162,Hamburg Commercial Bank AG,DE,8,,,,none,no counterpart in panel
+529900V3O1M5IHMOSF46,State Street Europe Holdings Germany S.a.r.l. & Co. KG,DE,8,,,,none,no counterpart in panel
+7LTWFZYICNSX8D621K86,Deutsche Bank AG,DE,8,,,,none,group not in panel
+851WYGNLUQLFZBSYGB56,COMMERZBANK Aktiengesellschaft,DE,8,113985.0,Commerzbank AG (XTRA:CBK),2010-2021,name,
+B81CK4ESI35472RHJ606,Landesbank Baden-Württemberg,DE,7,4073469.0,Landesbank Baden-Württemberg,2010-2021,name,
+DIZES5CFO5K3I5R58746,Landesbank Hessen-Thüringen Girozentrale,DE,8,4120106.0,Landesbank Hessen-Thüringen Girozentrale,2010-2021,name,
+DSNHHQ2B9X5N6OUJ1236,Norddeutsche Landesbank -Girozentrale-,DE,8,4145342.0,Norddeutsche Landesbank Girozentrale,2010-2021,name,
+DZZ47B9A52ZJ6LT6VV95,Deutsche Pfandbriefbank AG,DE,8,,,,none,no counterpart in panel
+EZKODONU5TYHW4PP1R34,Aareal Bank AG,DE,5,,,,none,no counterpart in panel
+VDYMYTQGZZ6DU0912C88,Bayerische Landesbank,DE,8,4048275.0,Bayerische Landesbank,2010-2021,name,
+5299009N55YRQC69CN08,"Alpha Bank, S.A.",GR,7,4080963.0,Alpha Services and Holdings S.A. (ATSE:ALPHA),2010-2021,manual,Alpha Services and Holdings holds the group history
+5UMCZOEYKCVFAW8ZLO05,"National Bank of Greece, S.A.",GR,8,4048999.0,National Bank of Greece S.A. (ATSE:ETE),2010-2021,name,
+JEUVK5RWVJEN8W0C9M24,"Eurobank Ergasias, S.A.",GR,8,4145113.0,Eurobank Ergasias Services and Holdings S.A. (ATSE:EUROB),2010-2021,manual,Eurobank Ergasias Services and Holdings
+M6AD1Y1KW32H8THQ6F76,"Piraeus Bank, S.A.",GR,8,4145110.0,Piraeus Financial Holdings S.A. (ATSE:TPEIR),2010-2021,manual,Piraeus Financial Holdings holds the group history
+529900W3MOO00A18X956,OTP Bank Nyrt.,HU,8,4145030.0,OTP Bank Nyrt. (BUSE:OTP),2010-2021,name,
+549300PZMFIQR79Q0T97,Íslandsbanki hf.,IS,7,,,,none,country not in panel
+549300TLZPT6JELDWM92,Landsbankinn,IS,7,,,,none,country not in panel
+RIL4VBPDB0M7Z3KXSF19,Arion banki hf,IS,7,,,,none,country not in panel
+549300K7L8YW8M215U46,Citibank Holdings Ireland Limited,IE,6,,,,none,Citibank Europe plc is matched separately
+635400AKJBGNS5WNQL34,AIB Group plc,IE,8,4002079.0,AIB Group plc (ISE:A5G),2010-2021,name,
+635400C8EK6DRI12LJ39,Bank of Ireland Group plc,IE,8,7049657.0,Bank of Ireland Group plc (ISE:BIRG),2014-2021,name,
+EQYXK86SF381Q21S3020,Bank of America Merrill Lynch International Designated Activity Company,IE,7,,,,none,no counterpart in panel
+2W8N8UU78PMDQKZENC08,Intesa Sanpaolo S.p.A.,IT,8,4100801.0,Intesa Sanpaolo S.p.A. (BIT:ISP),2010-2021,name,
+549300TRUWO2CD2G5692,UniCredit S.p.A.,IT,8,4055762.0,UniCredit S.p.A. (BIT:UCG),2010-2021,name,
+81560097964CBDAED282,Unione di Banche Italiane S.p.A.,IT,3,4238420.0,Unione di Banche Italiane S.p.A.,2010-2020,name,
+815600AD83B2B6317788,Credito Emiliano Holding S.p.A.,IT,8,4252943.0,Credito Emiliano Holding S.p.A.,2010-2021,name,
+815600E4E6DCD2D25E30,Banco BPM S.p.A.,IT,8,4884786.0,Banco BPM S.p.A. (BIT:BAMI),2016-2021,name,
+J48C8PCSJVUBR8KCW529,"Banca Popolare di Sondrio, Società Cooperativa per Azioni",IT,8,4145079.0,Banca Popolare di Sondrio S.p.A (BIT:BPSO),2010-2021,manual,
+J4CP7MHCXR8DAQMKIL78,Banca Monte dei Paschi di Siena S.p.A.,IT,8,4182766.0,Banca Monte dei Paschi di Siena S.p.A. (BIT:BMPS),2010-2021,name,
+LOO0AWXR8GF142JCO404,Cassa Centrale Banca - Credito Cooperativo Italiano SpA,IT,8,4252696.0,Cassa Centrale Banca - Credito Cooperativo Italiano S.p.A.,2010-2021,manual,
+N747OI7JINV7RUUH6190,BPER Banca S.p.A.,IT,7,4219855.0,BPER Banca SpA (BIT:BPE),2010-2021,manual,
+NNVPP80YIZGEY2314M97,ICCREA Banca S.p.A. – Istituto Centrale del Credito Cooperativo,IT,8,,,,none,no counterpart in panel
+PSNL19R2RXX5U3QWHI44,Mediobanca – Banca di Credito Finanziario S.p.A.,IT,8,4090384.0,Mediobanca Banca di Credito Finanziario S.p.A. (BIT:MB),2010-2021,name,
+2138009Y59EAR7H1UO97,"Akciju sabiedriba ""Citadele banka""",LV,8,,,,none,country not in panel
+549300TK038P6EV4YU51,Akcine bendrove Siauliu bankas,LT,8,,,,none,country not in panel
+549300AUUQG072ATL746,Precision Capital S.A.,LU,4,,,,none,country not in panel
+549300IVXKQHV6O7PY61,RBC Investor Services Bank S.A.,LU,4,,,,none,country not in panel
+7W1GMC6J4KGLBBUSYP52,J.P. Morgan Bank Luxembourg S.A.,LU,4,,,,none,country not in panel
+9CZ7TVMR36CYD5TZBS50,Banque Internationale à Luxembourg,LU,8,,,,none,country not in panel
+R7CQUF1DQM73HUTV1078,"Banque et Caisse d’Epargne de l’Etat, Luxembourg",LU,8,,,,none,country not in panel
+RNVZOEETEJ32KW0QXS82,State Street Bank Luxembourg S.C.A.,LU,1,,,,none,country not in panel
+213800EUDXECGWMKKR98,Commbank Europe Ltd,MT,3,,,,none,country not in panel
+213800TC9PZRBHMJW403,MDB Group Limited,MT,8,,,,none,country not in panel
+529900RWC8ZYB066JF16,Bank of Valletta Plc,MT,8,,,,none,country not in panel
+529900GGYMNGRQTDOO93,BNG Bank N.V.,NL,8,,,,none,no counterpart in panel
+549300NYKK9MWM7GGW15,ING Groep N.V.,NL,8,113837.0,ING Groep N.V. (ENXTAM:INGA),2014-2021,name,
+BFXS5XCH7N0Y05NIXW11,ABN AMRO Bank N.V.,NL,8,4000991.0,ABN AMRO Bank N.V. (ENXTAM:ABN),2010-2021,name,
+724500A1FNICHSDF2I11,de Volksbank N.V.,NL,8,4242257.0,de Volksbank N.V.,2010-2021,name,
+DG3RU1DBUFHT4ZF9WN62,Coöperatieve Rabobank U.A.,NL,8,,,,none,group not in panel (one local bank without data)
+JLP5FSPH9WPSHY3NIM24,Nederlandse Waterschapsbank N.V.,NL,8,,,,none,no counterpart in panel
+549300GKFG0RYRRQ1414,DNB BANK ASA,NO,7,,,,none,country not in panel
+549300Q3OIWRHQUQM052,SPAREBANK 1 SR-BANK ASA,NO,7,,,,none,country not in panel
+7V6Z97IO7R1SEAO84Q32,SPAREBANK 1 SMN,NO,7,,,,none,country not in panel
+5493000LKS7B3UTF7H35,Bank Polska Kasa Opieki SA,PL,8,4238323.0,Bank Polska Kasa Opieki S.A. (WSE:PEO),2010-2021,manual,
+P4GTT6GF1W40CVIMFR43,Powszechna Kasa Oszczednosci Bank Polski SA,PL,8,4182794.0,Powszechna Kasa Oszczednosci Bank Polski Spólka Akcyjna (WSE:PKO),2010-2021,manual,
+2138004FIUXU3B2MR537,"Caixa Económica Montepio Geral, Caixa Económica Bancária, S.A.",PT,3,,,,none,country not in panel
+529900H2MBEC07BLTB26,"Caixa Central - Caixa Central de Crédito Agrícola Mútuo, CRL",PT,3,,,,none,country not in panel
+222100K6QL2V4MLHWQ08,LSF Nani Investments S.à.r.l.,PT,8,,,,none,country not in panel
+JU1U6S0DG9YLT7N8ZV32,"Banco Comercial Português, SA",PT,8,,,,none,country not in panel
+TO822O0VT80V06K0FH57,"Caixa Geral de Depósitos, SA",PT,8,,,,none,country not in panel
+549300RG3H390KEL8896,Banca Transilvania,RO,8,,,,none,country not in panel
+222100ZXZ9BRGDMKXL75,Biser Topco S.à.r.l.,SI,4,,,,none,country not in panel
+5493001BABFV7P27OW30,"Nova Ljubljanska Banka d.d., Ljubljana",SI,8,,,,none,country not in panel
+549300271OUEJT4RYD30,Abanka d.d.,SI,1,,,,none,country not in panel
+95980020140005881190,"Banco de Crédito Social Cooperativo, S.A.",ES,8,4550154.0,"Banco de Crédito Social Cooperativo, S.A.",2015-2021,name,
+5493006QMFDDMYWIAM13,"Banco Santander, S.A.",ES,8,113983.0,"Banco Santander, S.A. (BME:SAN)",2010-2021,name,
+5493007SJLLCTM6J6M37,"Unicaja Banco, S.A.",ES,8,4308526.0,"Unicaja Banco, S.A. (BME:UNI)",2011-2021,name,
+549300GT0XFTFHGOIS94,"BFA Tenedora de Acciones, S.A.",ES,3,4291604.0,"Bankia, S.A.",2011-2020,approximate,BFA is the parent of Bankia; panel has Bankia
+549300OLBL49CW8CT155,"Ibercaja Banco, S.A.",ES,8,4308430.0,"Ibercaja Banco, S.A.",2011-2021,name,
+549300U4LIZV0REEQQ46,"Kutxabank, S.A.",ES,8,4309260.0,"Kutxabank, S.A.",2012-2021,name,
+635400XT3V7WHLSFYY25,"Liberbank, S.A.",ES,3,4291241.0,"Liberbank, S.A.",2011-2020,name,
+7CUNS533WID6K7DGFI87,"CaixaBank, S.A.",ES,8,4219193.0,"CaixaBank, S.A. (BME:CABK)",2011-2021,name,
+9598003BP0LHPHDWV834,"ABANCA Holding Financiero, S.A.",ES,1,,,,none,ABANCA Corporación Bancaria is matched separately
+K8MS7FD7N5Z2WQ51AZ71,"Banco Bilbao Vizcaya Argentaria, S.A.",ES,8,113904.0,"Banco Bilbao Vizcaya Argentaria, S.A. (BME:BBVA)",2010-2021,name,
+SI5RG2M0WQQLZCXKRM20,"Banco de Sabadell, S.A.",ES,8,4151699.0,"Banco de Sabadell, S.A. (BME:SAB)",2010-2021,name,
+VWMYAEQSTOPNV0SUGU82,"Bankinter, S.A.",ES,8,4144839.0,"Bankinter, S.A. (BME:BKT)",2010-2021,name,
+549300C6TUMDXNOVXS82,Länsförsäkringar Bank AB - group,SE,8,,,,none,country not in panel
+EV2XZWMLLXF2QRX0CD47,Kommuninvest - group,SE,8,,,,none,country not in panel
+F3JS33DEI6XQ4ZBPTN86,Skandinaviska Enskilda Banken - group,SE,8,,,,none,country not in panel
+H0YX5LBGKDVOWCXBZ594,SBAB Bank AB - group,SE,8,,,,none,country not in panel
+M312WZV08Y7LYUC71685,Swedbank - group,SE,8,,,,none,country not in panel
+NHBDILHZTYCNBV5UYZ31,Svenska Handelsbanken - group,SE,8,,,,none,country not in panel
+2138005O9XJIJN4JPN90,The Royal Bank of Scotland Group Public Limited Company,GB,3,3001937.0,NatWest Group plc (LSE:NWG),2010-2021,manual,renamed NatWest Group plc
+549300PPXHEU2JF0AM85,Lloyds Banking Group Plc,GB,3,4041848.0,Lloyds Banking Group plc (LSE:LLOY),2010-2021,name,
+549300XFX12G42QIKN82,Nationwide Building Society,GB,3,,,,none,no counterpart in panel
+G5GSEF7VJP5I7OUK5573,Barclays Plc,GB,3,4041196.0,Barclays Bank PLC,2011-2021,approximate,"panel has Barclays Bank PLC, not the group; ring-fenced UK bank is outside it from 2018"
+MLU0ZO3ML4LN2LL2TL39,HSBC Holdings Plc,GB,3,113876.0,HSBC Holdings plc (LSE:HSBA),2010-2021,name,
+U4LOSYZ7YG4W3S5F2G91,Standard Chartered Plc,GB,3,4041955.0,Standard Chartered PLC (LSE:STAN),2010-2021,name,
+213800RZWHE5EUX9R444,Luminor Holding AS,EE,5,,,,none,country not in panel
+54930056IRBXK0Q1FP96,Abanca Corporación Bancaria S.A.,ES,7,4303835.0,"ABANCA Corporación Bancaria, S.A.",2011-2021,name,
+5299007QVIQ7IO64NX37,"UBS Europe SE, Ffm",DE,6,,,,none,no counterpart in panel
+549300ZK53CNGEEI6A29,"J.P. Morgan AG, Frankfurt am Main",DE,6,,,,none,no counterpart in panel
+F0HUI1NY1AZMJMD8LP67,HSBC France,FR,6,4040727.0,"HSBC Continental Europe, S.A",2010-2021,manual,renamed HSBC Continental Europe
+2G5BKIC2CB69PRJH1W31,Barclays Bank Ireland Plc,IE,6,4254393.0,Barclays Bank Ireland PLC,2010-2021,name,
+635400KQIMALJ4XLAD78,Ulster Bank Ireland Designated Activity Company,IE,2,4259734.0,Ulster Bank Ireland Designated Activity Company,2010-2021,name,
+549300X34UUBDEUL1Z91,HSBC Bank Malta p.l.c.,MT,3,,,,none,country not in panel
+969500STN7T9MRUMJ267,Bpifrance,FR,5,,,,none,no counterpart in panel
+529900J3WLMSUC78RN75,Magyar Bankholding,HU,1,24790382.0,Magyar Bankholding Zrt.,2020-2021,name,
+549300L7YCATGO57ZE10,Gruppo Bancario Finecobank,IT,5,4245529.0,FinecoBank Banca Fineco S.p.A. (BIT:FBK),2010-2021,manual,
+7LVZJ6XRIE7VNZ4UBX81,Gruppo Bancario Mediolanum,IT,5,4303260.0,Banca Mediolanum S.p.A. (BIT:BMED),2010-2021,approximate,EBA reports the banking group without insurance; panel has the listed group
+72450088V7QLGDPY6W41,LP Group B.V.,NL,2,,,,none,no counterpart in panel
+549300DYPOFMXOR7XM56,Crelan,BE,4,,,,none,no counterpart in panel
+8IBZUGJ7JPLH368JE346,Goldman Sachs Bank Europe SE,DE,4,,,,none,no counterpart in panel
+549300C9KPZR0VZ16R05,Morgan Stanley Europe Holding SE,DE,4,,,,none,no counterpart in panel
+21380051GNDG65QWAO66,HSBC Germany Holdings GmbH,DE,1,4145044.0,HSBC Trinkaus & Burkhardt GmbH,2010-2020,approximate,holding of HSBC Trinkaus & Burkhardt
+3H0Q3U74FVFED2SHZT16,MKB bankcsoport,HU,4,4183820.0,MKB BANK Nyrt.,2010-2021,approximate,"EBA reports the banking group, panel has MKB Bank; capital ratios differ"
+5493009EIBTCB1X12G89,LGT Group Foundation,LI,4,,,,none,country not in panel
+529900OE1FOAM50XLP72,Liechtensteinische Landesbank AG,LI,4,,,,none,country not in panel
+KHCL65TP05J1HUW2D560,Quintet Private Bank (Europe) S.A,LU,2,,,,none,country not in panel
+213800HDJ876ACJXXD05,AGRI EUROPE CYPRUS LIMITED,SI,4,,,,none,country not in panel
+254900RNFMDM0P11YR84,Atlantic Lux HoldCo S.à r.l.,DE,3,,,,none,no counterpart in panel
+6TJCK1B7E7UTXP528Y04,Citigroup Global Markets Europe AG,DE,3,,,,none,no counterpart in panel
+529900S1KHKOEQL5CK20,Wüstenrot Bausparkasse Aktiengesellschaft,DE,3,,,,none,no counterpart in panel
+549300FH0WJAPEHTIQ77,BofA Securities Europe SA,FR,3,,,,none,no counterpart in panel
+485100FX5Y9YLAQLNP12,Revolut Holdings Europe UAB,LT,3,,,,none,country not in panel
+529900SXEWPJ1MRRX537,Raiffeisen-Holding Niederösterreich-Wien,AT,2,,,,none,country not in panel
+N1FBEDJ5J41VKZLO2475,Citibank Europe Plc,IE,2,4389334.0,Citibank Europe plc,2011-2021,name,
+724500JIWG886A9RRT57,RBS Holdings N.V.,NL,2,4025806.0,RBS Holdings N.V.,2010-2018,name,
+2138008AVF4W7FMW8W87,CEC BANK S.A.,RO,2,,,,none,country not in panel
+529900SSGT49ZZSWYE62,Volkswagen Financial Services AG,DE,1,,,,none,no counterpart in panel
+213800DBQIB6VBNU5C64,Alpha Bank S.A.,GR,1,4080963.0,Alpha Services and Holdings S.A. (ATSE:ALPHA),2010-2021,manual,entity after the 2021 hive-down; same group
